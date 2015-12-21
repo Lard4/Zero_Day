@@ -1,7 +1,6 @@
 import java.util.*;
 
 public class CommandWords {
-    // a constant array that holds all valid command words
     private HashMap<Integer, String> validCommands = new HashMap<>();
     private static final int MAX_COMMANDS = 100;
     //8998542
