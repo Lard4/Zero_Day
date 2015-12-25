@@ -11,25 +11,28 @@ import enigma.core.Enigma;
 public class Game {
     private Parser parser;
     private Directory currentDirectory;
+    private Tool airfrack, spooftooth, bt_snoop;
+    private enigma.console.Console s_console;
+    private Random rand = new Random();
+    
     private boolean isRoot = false;
     private boolean userIsNew = true;
     private boolean cdAble = true;
-    private enigma.console.Console s_console;
-    Random rand = new Random();
+    private String rootPassword = "abc";
+    private String secondLevel = null;
+    private int fileLevel = -1;
+    private int[][] workingDirectory = new int[4][4];
+    
     private static final long standardDelay = 1; //80ms
     private static final long shortDelay = 1; //50ms
     private static final long longDelay = 1; //110ms
     
-    private String rootPassword = "";
-    private String secondLevel = null;
-    private int fileLevel = -1;
-    private int[][] workingDirectory = new int[4][4];
-
     public Game() {
         // Enigma Console garb
         s_console = Enigma.getConsole("Anonymous Console");
         TextAttributes attrs = new TextAttributes(Color.WHITE);
         s_console.setTextAttributes(attrs);
+        
         createStructure();
         parser = new Parser();
     }
@@ -100,7 +103,7 @@ public class Game {
             printWithDelays("   Yemen", longDelay);
             printWithDelays("   Afghanistan", longDelay);
             System.out.println();
-            Thread.sleep(100); //2000
+            Thread.sleep(1); //2000
             
             printWithDelays("As you can see, if Obama declares war on ISIS,", standardDelay);
             printWithDelays("he will therefore go to war on all 7 nations.", standardDelay);
@@ -125,7 +128,7 @@ public class Game {
             System.out.println("------------------------------------------------------------------------");
             System.out.println();
             
-            printWithDelays("Hello. My name is Roger Dingledine. I am the leader of Anonymou.s", standardDelay);
+            printWithDelays("Hello. My name is Roger Dingledine. I am the leader of Anonymous.", standardDelay);
             printWithDelays("I am here to assist you through Zero Day.", standardDelay);
             printWithDelays("Let's start with the basic Linux shell commands.", standardDelay);
             Thread.sleep(1); //2000
@@ -159,20 +162,20 @@ public class Game {
     }
     
     public String executeCommand(String command) {
-		StringBuffer output = new StringBuffer();
-		try {
-			Process process = Runtime.getRuntime().exec(command);
-			process.waitFor();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-			String line = "";			
-			while ((line = reader.readLine())!= null) {
-				output.append(line + "\n");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return output.toString();
-	}
+        StringBuffer output = new StringBuffer();
+        try {
+            Process process = Runtime.getRuntime().exec(command);
+            process.waitFor();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line = "";           
+            while ((line = reader.readLine())!= null) {
+                output.append(line + "\n");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return output.toString();
+    }
 
     private boolean processCommand(Command command) {
         boolean wantToQuit = false;
@@ -195,7 +198,7 @@ public class Game {
         }
         else if (commandWord.equals("sudo")) {
             if (command.hasSecondWord() != false) {
-                if (command.getSecondWord().equals("su")){
+                if (command.getSecondWord().equals("su")) {
                     enterPassword();
                 }
             }
@@ -212,7 +215,7 @@ public class Game {
                 if ((command.getSecondWord().equals("anon_root_pswd.txt")) && (checkDirectory(3, 0))) {
                     final String alph = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+{}|[];':./>?,<~`";
                     final int nAlph = alph.length();
-                    for (int x = 0; x <= 10; x++) {
+                    for (int x = 0; x <= 7; x++) {
                         rootPassword += (alph.charAt(rand.nextInt(nAlph)));
                     }
                     parser.addCommand(rootPassword);
@@ -224,6 +227,64 @@ public class Game {
                     System.out.println(command.getSecondWord() + " is not a file");
                 }
             }
+        }
+        else if (commandWord.equals("install")) {
+            if (isRoot) {
+                if (command.hasSecondWord() != false) {
+                    switch (command.getSecondWord()) {
+                        case "airfrack":
+                            installTool("airfrack");
+                            System.out.println("airfrack successfully installed!");
+                            break;
+                            
+                        case "bt_snoop":
+                            installTool("bt_snoop");
+                            System.out.println("bt_snoop successfully installed!");
+                            break;
+                            
+                        case "spooftooth":
+                            installTool("spooftooth");
+                            System.out.println("spooftooth successfully installed!");
+                            break;
+                            
+                        default:
+                            System.out.println("package " + command.getSecondWord() + " does not exist");
+                            break;
+                    }
+                    System.out.println();
+                }
+            }
+            else {
+                System.out.println("You must be root to install tools.");
+                System.out.println();
+            }
+        }
+        else if (commandWord.equals("airfrack")) {
+            if (command.hasSecondWord()) {
+                System.out.println("airfrack has not been programmed yet.");
+            } else {
+                System.out.println(airfrack.getHelp());
+            }
+            System.out.println();
+        }
+        else if (commandWord.equals("bt_snoop")) {
+            if (command.hasSecondWord()) {
+                System.out.println("bt_snoop has not been programmed yet.");
+            } else {
+                System.out.println(bt_snoop.getHelp());
+            }
+            System.out.println();
+        }
+        else if (commandWord.equals("spooftooth")) {
+            if (command.hasSecondWord()) {
+                System.out.println("spooftooth has not been programmed yet.");
+            } else {
+                System.out.println(spooftooth.getHelp());
+            }
+            System.out.println();
+        }
+        else if ((!rootPassword.equals("abc")) && (commandWord.equals(rootPassword))) {
+            System.out.println("I don't know what you mean...");
         }
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
@@ -266,40 +327,55 @@ public class Game {
         if (checkDirectory(0,0)) {
             TextAttributes attrs = new TextAttributes(Color.GREEN);
             s_console.setTextAttributes(attrs);
-            
             if (isRoot) {
-                System.out.println("etc");
+                System.out.println("etc" + "\t" + "desktop" + "\t" + "music" + "\t" + "pictures");
             } else {
                 System.out.println("desktop" + "\t" + "music" + "\t" + "pictures");
             }
         } else if (checkDirectory(1,0)) {
             TextAttributes attrs = new TextAttributes(Color.GREEN);
             s_console.setTextAttributes(attrs);
-            
             System.out.println("backgrounds");
         } else if (checkDirectory(2,0)) {
             TextAttributes attrs = new TextAttributes(Color.GREEN);
             s_console.setTextAttributes(attrs);
-            
             System.out.println("beyonce");
         } else if (checkDirectory(3,0)) {
             TextAttributes attrs = new TextAttributes(Color.BLUE);
             s_console.setTextAttributes(attrs);
             System.out.println("anon_root_pswd.txt");
         }
+        // Back to white!
         TextAttributes attrs = new TextAttributes(Color.WHITE);
         s_console.setTextAttributes(attrs);
-
+        // New line
         System.out.println();
     }
-    
-    private String getToolHelp(String tool) {
-        switch (tool) {
+
+    private void installTool(String sTool) {
+        switch (sTool) {
             case "airfrack":
-                return "use of airfrack-ng:" + "\n" +
-                       "--crack [WiFi Name]";
+                airfrack = new Tool("use of airfrack-ng:" + "\n" +
+                        "--crack [WiFi Name]" + "\t" + "crack a router's password" + "\n" +
+                        "--connect [WiFi Name]" + "\t" + "connect to a WiFi network");
+                parser.addCommand("airfrack");
+                currentDirectory.addTool(airfrack);
+                break;
+                
+            case "bt_snoop":
+                bt_snoop = new Tool("use of bt_snoop:" + "\n" +
+                        "--snoop" + "\t" + "find MAC adresses of bluetooth devices");
+                parser.addCommand("bt_snoop");
+                currentDirectory.addTool(bt_snoop);
+                break;
+                
+            case "spooftooth":
+                spooftooth = new Tool("use of spooftooth:" + "\n" +
+                        "--seize [Bluetooth MAC]" + "\t" + "connect to a bluetooth device");
+                parser.addCommand("spooftooth");
+                currentDirectory.addTool(spooftooth);
+                break;
         }
-        return null;
     }
 
     private void printHelp() {
@@ -384,6 +460,8 @@ public class Game {
                 System.out.println(newDirectory + " is not a file or directory");
             }
         }
+        // Refresh cdAble boolean
+        cdAble = true;
     }
     
     private void printWithDelays(String data, long delay) throws InterruptedException {

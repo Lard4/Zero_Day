@@ -7,10 +7,12 @@ import java.util.*;
 public class Directory {
     private String path;
     private int level;
+    private String[][] validDirectories;
     
     private HashMap <String, Directory> exits;
-    private String[][] validDirectories;
     private ArrayList <Tool> tools = new ArrayList <Tool>();
+    
+    private CommandWords commandWords = new CommandWords();
     
     public Directory(String path) {
         this.path = path;
