@@ -11,13 +11,14 @@ import enigma.core.Enigma;
 public class Game {
     private Parser parser;
     private Directory currentDirectory;
-    private Tool airfrack, spooftooth, bt_snoop;
+    private Tool airfrack, spooftooth, bt_snoop, macchanger;
     private enigma.console.Console s_console;
     private Random rand = new Random();
     
     private boolean isRoot = false;
     private boolean userIsNew = true;
     private boolean cdAble = true;
+    private boolean changedMac = false;
     private String rootPassword = "abc";
     private String secondLevel = null;
     private int fileLevel = -1;
@@ -161,6 +162,36 @@ public class Game {
         System.out.println();
     }
     
+    public void beginLevelTwo() {
+        System.out.println();
+        try {
+            printWithDelays("Good job, kid. You completed your first task.", standardDelay);
+            Thread.sleep(1); //1000
+            System.out.println();
+            
+            printWithDelays("Your next task is to hack into your neighbor's WiFi.", standardDelay);
+            printWithDelays("Your neighbor has gigabit internet speeds via his fiber connection.", standardDelay);
+            printWithDelays("Taking advatage of these internet speeds is a necessity.", standardDelay);
+            printWithDelays("Remember, you must remain anonymous at all costs.", standardDelay);
+            Thread.sleep(1); //1000
+            System.out.println();
+            
+            System.out.println("--------------------------------------------------------------");
+            System.out.println();
+            
+            printWithDelays("Now, for a little instruction.", standardDelay);
+            printWithDelays("You must use the command 'install' to install different penetration tools.", standardDelay);
+            printWithDelays("Use install followed by any of the following tools to install them:", standardDelay);
+            System.out.println("airfrack" + "\t" + "bt_snoop" + "\t" + "spooftooth" + "\t" + "macchanger");
+            Thread.sleep(1); //1000
+            System.out.println();
+            
+            printWithDelays("See you again once you hack into his WiFi.", standardDelay);
+        } catch (InterruptedException e) {
+            System.out.println(e);
+        }
+    }
+    
     public String executeCommand(String command) {
         StringBuffer output = new StringBuffer();
         try {
@@ -213,7 +244,7 @@ public class Game {
         else if (commandWord.equals("open")) {
             if (command.hasSecondWord() != false) {
                 if ((command.getSecondWord().equals("anon_root_pswd.txt")) && (checkDirectory(3, 0))) {
-                    final String alph = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+{}|[];':./>?,<~`";
+                    final String alph = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+{}[]./>?<~";
                     final int nAlph = alph.length();
                     for (int x = 0; x <= 7; x++) {
                         rootPassword += (alph.charAt(rand.nextInt(nAlph)));
@@ -247,6 +278,12 @@ public class Game {
                             System.out.println("spooftooth successfully installed!");
                             break;
                             
+                        case "macchanger":
+                            installTool("macchanger");
+                            System.out.println("macchanger successfully installed!");
+                            changedMac = true;
+                            break;
+                            
                         default:
                             System.out.println("package " + command.getSecondWord() + " does not exist");
                             break;
@@ -261,7 +298,11 @@ public class Game {
         }
         else if (commandWord.equals("airfrack")) {
             if (command.hasSecondWord()) {
-                System.out.println("airfrack has not been programmed yet.");
+                if (command.getSecondWord().equals("--crack")) {
+                    // TODO: Third word
+                } else if (command.getSecondWord().equals("--connect")) {
+                    
+                }
             } else {
                 System.out.println(airfrack.getHelp());
             }
@@ -283,6 +324,14 @@ public class Game {
             }
             System.out.println();
         }
+        else if (commandWord.equals("macchanger")) {
+            if (command.hasSecondWord()) {
+                System.out.println("macchanger has not been programmed yet.");
+            } else {
+                System.out.println(macchanger.getHelp());
+            }
+            System.out.println();
+        }
         else if ((!rootPassword.equals("abc")) && (commandWord.equals(rootPassword))) {
             System.out.println("I don't know what you mean...");
         }
@@ -296,6 +345,12 @@ public class Game {
     private void enterPassword() {
         boolean passwording = true;
         
+        passwording = false;
+        isRoot = true;
+        fileLevel = 0;
+        currentDirectory.setValidDirectories(true);
+        beginLevelTwo();
+                
         while (passwording) {
             System.out.println("[sudo] root password: ");
             Command command = parser.getCommand(false);
@@ -306,6 +361,7 @@ public class Game {
                 isRoot = true;
                 fileLevel = 0;
                 currentDirectory.setValidDirectories(true);
+                beginLevelTwo();
             } else if ((password != null) && (password.equals("exit"))) {
                 passwording = false;
             } else {
@@ -373,6 +429,13 @@ public class Game {
                 spooftooth = new Tool("use of spooftooth:" + "\n" +
                         "--seize [Bluetooth MAC]" + "\t" + "connect to a bluetooth device");
                 parser.addCommand("spooftooth");
+                currentDirectory.addTool(spooftooth);
+                break;
+                
+            case "macchanger":
+                spooftooth = new Tool("use of macchanger:" + "\n" +
+                        "--auto" + "\t" + "randomly generate a new MAC address");
+                parser.addCommand("macchanger");
                 currentDirectory.addTool(spooftooth);
                 break;
         }
