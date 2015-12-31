@@ -21,6 +21,7 @@ public class Game {
     private boolean changedMac = false;
     private String rootPassword = "abc";
     private String secondLevel = null;
+    private String wifi = null;
     private int fileLevel = -1;
     private int[][] workingDirectory = new int[4][4];
     
@@ -299,9 +300,63 @@ public class Game {
         else if (commandWord.equals("airfrack")) {
             if (command.hasSecondWord()) {
                 if (command.getSecondWord().equals("--crack")) {
-                    // TODO: Third word
+                    if (command.hasThirdWord()) {
+                        if (command.getThirdWord().equals("Linksys")) {
+                            Random rand = new Random();
+                            final String alph = "abcdefghijklmnopqrstuvwxyz";
+                            final int nAlph = alph.length();
+                            String key = "";
+                            for (int x = 0; x <= 100; x++) {
+                                for (int z = 0; z <= 100; z++) { // Flush the screen (hacky ikr)
+                                    System.out.println();
+                                }
+                                System.out.println("airfrack -----> cracking Linksys network");
+                                System.out.println("brute force testing Linksys keys at 2294 kps");
+                                
+                                for (int y = 0; y <= 7; y++) {
+                                    key += (alph.charAt(rand.nextInt(nAlph)));
+                                }
+                                
+                                if (x == 100) {
+                                    System.out.println("current key: notYourWifi");
+                                } else {
+                                    System.out.println("current key: " + key);
+                                }
+                                key = "";
+                                
+                                try {
+                                    Thread.sleep(100);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            System.out.println();
+                            System.out.println("Linksys network cracked!");
+                            System.out.println("key = notYourWifi");
+                        }
+                    }
                 } else if (command.getSecondWord().equals("--connect")) {
-                    
+                    if (command.hasThirdWord()) {
+                        switch (command.getThirdWord()) {
+                            case "Linksys":
+                                if (command.hasFourthWord()) {
+                                    if (command.getFourthWord().equals("notYourWiFi")) {
+                                        System.out.println("Conected to Linksys network");
+                                        wifi = "Linksys";
+                                    } else {
+                                        System.out.println("You have entered an incorrect password.");
+                                    } break;
+                                } else {
+                                    System.out.println("Error: Missing second argument [password]");
+                                }
+                                
+                            default:
+                                System.out.println(command.getThirdWord() + " is not a valid network");
+                                break;
+                        }
+                    } else {
+                        System.out.println("Error: Missing first argument [WiFi Name]");
+                    }
                 }
             } else {
                 System.out.println(airfrack.getHelp());
@@ -413,7 +468,7 @@ public class Game {
             case "airfrack":
                 airfrack = new Tool("use of airfrack-ng:" + "\n" +
                         "--crack [WiFi Name]" + "\t" + "crack a router's password" + "\n" +
-                        "--connect [WiFi Name]" + "\t" + "connect to a WiFi network");
+                        "--connect [WiFi Name] [Password]" + "\t" + "connect to a WiFi network");
                 parser.addCommand("airfrack");
                 currentDirectory.addTool(airfrack);
                 break;

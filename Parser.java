@@ -29,6 +29,8 @@ public class Parser {
         String inputLine;
         String word1 = null;
         String word2 = null;
+        String word3 = null;
+        String word4 = null;
 
         if (!root) {
             System.out.print(name + "@anonymous: " + "$ ");
@@ -44,14 +46,20 @@ public class Parser {
             word1 = tokenizer.next();
             if(tokenizer.hasNext()) {
                 word2 = tokenizer.next();
+                if(tokenizer.hasNext()) {
+                    word3 = tokenizer.next();
+                    if(tokenizer.hasNext()) {
+                        word4 = tokenizer.next();
+                    }
+                }
             }
         }
 
         if(commands.isCommand(word1)) {
-            return new Command(word1, word2);
+            return new Command(word1, word2, word3, word4);
         }
         else {
-            return new Command(null, word2); 
+            return new Command(null, word2, word3, word4); 
         }
     }
 }
