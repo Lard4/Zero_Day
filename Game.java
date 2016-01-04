@@ -193,6 +193,24 @@ public class Game {
         }
     }
     
+    public void beginLevelThree() {
+        try {
+            printWithDelays("Good job, kid. You completed your second task.", standardDelay);
+            Thread.sleep(1); //1000
+            System.out.println();
+            
+            printWithDelays("Your next task is to connect to the deep web in order to go on the Anonyous Forum.", standardDelay);
+            printWithDelays("From the froum, you will then find the man who lives in Russia to set up a VPN for you.", standardDelay);
+            printWithDelays("Using a VPN will mask your identity to people from the outside world.", standardDelay);
+            Thread.sleep(1); //1000
+            System.out.println();
+            
+            printWithDelays("To complete this mission, you will need to use two tools: tor and connect", standardDelay);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public String executeCommand(String command) {
         StringBuffer output = new StringBuffer();
         try {
@@ -345,10 +363,11 @@ public class Game {
                                         wifi = "Linksys";
                                     } else {
                                         System.out.println("You have entered an incorrect password.");
-                                    } break;
+                                    }
                                 } else {
                                     System.out.println("Error: Missing second argument [password]");
                                 }
+                                break;
                                 
                             default:
                                 System.out.println(command.getThirdWord() + " is not a valid network");
@@ -356,6 +375,16 @@ public class Game {
                         }
                     } else {
                         System.out.println("Error: Missing first argument [WiFi Name]");
+                    }
+                } else if (command.getSecondWord().equals("--snoop")) {
+                    try {
+                        System.out.println("Available networks:");
+                        Thread.sleep(555);
+                        System.out.println("Anonymous [WPA2 Security]" + "\t");
+                        Thread.sleep(342);
+                        System.out.print("Linksys");
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
             } else {
