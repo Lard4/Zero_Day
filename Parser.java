@@ -25,7 +25,7 @@ public class Parser {
         commands.addCommands(command);
     }
 
-    public Command getCommand(boolean root) {
+    public Command getCommand(boolean root, boolean irc) {
         String inputLine;
         String word1 = null;
         String word2 = null;
@@ -36,6 +36,9 @@ public class Parser {
             System.out.print(name + "@anonymous: " + "$ ");
         }
         else {
+            if (irc) {
+                System.out.print(name + ": ");
+            }
             System.out.print(name + "@anonymous: " + "# ");
         }
 

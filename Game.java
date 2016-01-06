@@ -10,8 +10,10 @@ import enigma.core.Enigma;
 
 public class Game {
     private Parser parser;
+    private Player player = new Player();
+    private Dingledine ding = new Dingledine();
     private Directory currentDirectory;
-    private Tool airfrack, spooftooth, bt_snoop, macchanger;
+    private Tool airfrack, spooftooth, wifi_snoop, macchanger, tor, connect;
     private enigma.console.Console s_console;
     private Random rand = new Random();
     
@@ -24,11 +26,7 @@ public class Game {
     private String wifi = null;
     private int fileLevel = -1;
     private int[][] workingDirectory = new int[4][4];
-    
-    private static final long standardDelay = 1; //80ms
-    private static final long shortDelay = 1; //50ms
-    private static final long longDelay = 1; //110ms
-    
+
     public Game() {
         // Enigma Console garb
         s_console = Enigma.getConsole("Anonymous Console");
@@ -51,7 +49,9 @@ public class Game {
     }
     
     private void start() {
-        printWelcome();
+        //ding.intro();
+        printPath();
+        System.out.println();
         
         for (int row = 0; row < workingDirectory.length; row++) {
             for (int col = 0; col < workingDirectory[row].length; col++) {
@@ -59,11 +59,16 @@ public class Game {
             }
         }
         
+        // Pre-game neccessary operations
         workingDirectory[0][0] = 314;
+        connect = new Tool("use of connect:" + "\n" +
+                        "--attach [PATH_TO_SERVER_POWER]" + "\t" + "to connect to a server");
+                parser.addCommand("connect");
+                currentDirectory.addTool(connect);
         
         boolean finished = false;
         while (! finished) {
-            Command command = parser.getCommand(isRoot);
+            Command command = parser.getCommand(isRoot, false);
             finished = processCommand(command);
         }
         System.out.println("Thank you for playing.  Good bye.");
@@ -72,143 +77,6 @@ public class Game {
     private void printPath() {
         System.out.print(currentDirectory.getPath());
         System.out.println();
-    }
-
-    private void printWelcome() {
-        System.out.println();
-        try {
-            printWithDelays("We are Anonymous", standardDelay);
-            Thread.sleep(1); //750
-            printWithDelays("We are a legion", standardDelay);
-            Thread.sleep(1); //750
-            printWithDelays("We do not forgive", standardDelay);
-            Thread.sleep(1); //750
-            printWithDelays("We do not forget", standardDelay);
-            Thread.sleep(1); //750
-            printWithDelays("Expect us.", longDelay);
-            System.out.println();
-            Thread.sleep(1); //2000
-            
-            printWithDelays("Welcome to your Linux shell environment.", standardDelay);
-            Thread.sleep(1); //1000
-            printWithDelays("This is where you will spend the entirety of your time hacking.", standardDelay);
-            System.out.println();
-            Thread.sleep(1); //2000
-            
-            printWithDelays("Recently, Barack Obama has threatened to declare war on ISIS.", standardDelay);
-            printWithDelays("Little does he know that ISIS has formed a pact with the following countries:", standardDelay);
-            printWithDelays("   Syria", longDelay);
-            printWithDelays("   Lebanon", longDelay);
-            printWithDelays("   Jordan", longDelay);
-            printWithDelays("   Egypt", longDelay);
-            printWithDelays("   Iraq", longDelay);
-            printWithDelays("   Yemen", longDelay);
-            printWithDelays("   Afghanistan", longDelay);
-            System.out.println();
-            Thread.sleep(1); //2000
-            
-            printWithDelays("As you can see, if Obama declares war on ISIS,", standardDelay);
-            printWithDelays("he will therefore go to war on all 7 nations.", standardDelay);
-            printWithDelays("If this happens, it's only a matter of time before", standardDelay);
-            printWithDelays("the US turns into nothing more than a radioactive crater.", standardDelay);
-            System.out.println();
-            Thread.sleep(1); //2000
-            
-            printWithDelays("Over the past few months you have came up with a master plan of", standardDelay);
-            printWithDelays("how to take down ISIS.", standardDelay);
-            printWithDelays("Keeping in mind that anonymity is of the utmost priority, you must...", standardDelay);
-            printWithDelays("   1) Set up a secure environment", standardDelay);
-            printWithDelays("   2) Install hacking tools as you find them", standardDelay);
-            printWithDelays("   3) Take out ISIS's primary funding sources", standardDelay);
-            printWithDelays("   4) Deliver the final blow to ISIS", standardDelay);
-            System.out.println();
-            Thread.sleep(1); //2000
-            
-            printWithDelays("With that in mind, I wish you good luck.", standardDelay);
-            printWithDelays("We're all counting on you.", 1); //200
-            System.out.println();
-            System.out.println("------------------------------------------------------------------------");
-            System.out.println();
-            
-            printWithDelays("Hello. My name is Roger Dingledine. I am the leader of Anonymous.", standardDelay);
-            printWithDelays("I am here to assist you through Zero Day.", standardDelay);
-            printWithDelays("Let's start with the basic Linux shell commands.", standardDelay);
-            Thread.sleep(1); //2000
-            System.out.println();
-            
-            printWithDelays("To change to a different folder (referred to as directories) use 'cd'", standardDelay);
-            printWithDelays("Use cd followed by a directory to make that your working directory.", standardDelay);
-            Thread.sleep(1); //1000
-            System.out.println();
-            
-            printWithDelays("To see what files and directories are beneath you, use 'ls'", standardDelay);
-            printWithDelays("Files will be printed in blue and directories will be printed in green", standardDelay);
-            printWithDelays("ls will list everything that you can cd into or open.", standardDelay);
-            Thread.sleep(1); //1000
-            System.out.println();
-            
-            printWithDelays("Speaking of open... You can use the command 'open' to open files", standardDelay);
-            printWithDelays("Use open followed by the text file name.", standardDelay);
-            Thread.sleep(1); //2000
-            System.out.println();
-            
-            printWithDelays("Your first mission is to become the root user.", standardDelay);
-            printWithDelays("Use the command 'sudo su' to become root.", standardDelay);
-            printWithDelays("You may have to explore the file system to find the password.", standardDelay);
-        } catch (InterruptedException e) {
-            System.out.println(e);
-        }
-        System.out.println();
-        printPath();
-        System.out.println();
-    }
-    
-    public void beginLevelTwo() {
-        System.out.println();
-        try {
-            printWithDelays("Good job, kid. You completed your first task.", standardDelay);
-            Thread.sleep(1); //1000
-            System.out.println();
-            
-            printWithDelays("Your next task is to hack into your neighbor's WiFi.", standardDelay);
-            printWithDelays("Your neighbor has gigabit internet speeds via his fiber connection.", standardDelay);
-            printWithDelays("Taking advatage of these internet speeds is a necessity.", standardDelay);
-            printWithDelays("Remember, you must remain anonymous at all costs.", standardDelay);
-            Thread.sleep(1); //1000
-            System.out.println();
-            
-            System.out.println("--------------------------------------------------------------");
-            System.out.println();
-            
-            printWithDelays("Now, for a little instruction.", standardDelay);
-            printWithDelays("You must use the command 'install' to install different penetration tools.", standardDelay);
-            printWithDelays("Use install followed by any of the following tools to install them:", standardDelay);
-            System.out.println("airfrack" + "\t" + "bt_snoop" + "\t" + "spooftooth" + "\t" + "macchanger");
-            Thread.sleep(1); //1000
-            System.out.println();
-            
-            printWithDelays("See you again once you hack into his WiFi.", standardDelay);
-        } catch (InterruptedException e) {
-            System.out.println(e);
-        }
-    }
-    
-    public void beginLevelThree() {
-        try {
-            printWithDelays("Good job, kid. You completed your second task.", standardDelay);
-            Thread.sleep(1); //1000
-            System.out.println();
-            
-            printWithDelays("Your next task is to connect to the deep web in order to go on the Anonyous Forum.", standardDelay);
-            printWithDelays("From the froum, you will then find the man who lives in Russia to set up a VPN for you.", standardDelay);
-            printWithDelays("Using a VPN will mask your identity to people from the outside world.", standardDelay);
-            Thread.sleep(1); //1000
-            System.out.println();
-            
-            printWithDelays("To complete this mission, you will need to use two tools: tor and connect", standardDelay);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
     
     public String executeCommand(String command) {
@@ -231,7 +99,7 @@ public class Game {
         boolean wantToQuit = false;
 
         if(command.isUnknown()) {
-            System.out.println("I don't know what you mean...");
+            System.out.println("you have entered an invalid command.");
             return false;
         }
 
@@ -263,7 +131,7 @@ public class Game {
         else if (commandWord.equals("open")) {
             if (command.hasSecondWord() != false) {
                 if ((command.getSecondWord().equals("anon_root_pswd.txt")) && (checkDirectory(3, 0))) {
-                    final String alph = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+{}[]./>?<~";
+                    final String alph = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+{}[]/>?<~";
                     final int nAlph = alph.length();
                     for (int x = 0; x <= 7; x++) {
                         rootPassword += (alph.charAt(rand.nextInt(nAlph)));
@@ -287,9 +155,9 @@ public class Game {
                             System.out.println("airfrack successfully installed!");
                             break;
                             
-                        case "bt_snoop":
-                            installTool("bt_snoop");
-                            System.out.println("bt_snoop successfully installed!");
+                        case "wifi_snoop":
+                            installTool("wifi_snoop");
+                            System.out.println("wifi_snoop successfully installed!");
                             break;
                             
                         case "spooftooth":
@@ -301,6 +169,11 @@ public class Game {
                             installTool("macchanger");
                             System.out.println("macchanger successfully installed!");
                             changedMac = true;
+                            break;
+                            
+                        case "tor":
+                            installTool("tor");
+                            System.out.println("tor successfully installed!");
                             break;
                             
                         default:
@@ -324,23 +197,73 @@ public class Game {
                             final String alph = "abcdefghijklmnopqrstuvwxyz";
                             final int nAlph = alph.length();
                             String key = "";
+                            int arrowCounter = 0;
                             for (int x = 0; x <= 100; x++) {
                                 for (int z = 0; z <= 100; z++) { // Flush the screen (hacky ikr)
                                     System.out.println();
                                 }
-                                System.out.println("airfrack -----> cracking Linksys network");
-                                System.out.println("brute force testing Linksys keys at 2294 kps");
                                 
+                                for (int hash = 0; hash < 1000; hash++) {
+                                    if (hash % 100 == 0) {
+                                        System.out.println();
+                                    }
+                                    System.out.print("#");
+                                }
+                                System.out.println();
+                                System.out.println();
+                                
+                                for (int tabs = 0; tabs < 8; tabs++) {
+                                    System.out.print("\t");
+                                }
+                                
+                                if (arrowCounter < 2) {
+                                    System.out.print("airfrack -----> cracking Linksys network");
+                                } else if (arrowCounter < 4) {
+                                    System.out.print("airfrack ->     cracking Linksys network");
+                                } else if (arrowCounter < 6) {
+                                    System.out.print("airfrack -->    cracking Linksys network");
+                                } else if (arrowCounter < 8) {
+                                    System.out.print("airfrack --->   cracking Linksys network");
+                                } else if (arrowCounter < 10) {
+                                    System.out.print("airfrack ---->  cracking Linksys network");
+                                    arrowCounter = -5;
+                                } arrowCounter++;
+                                System.out.println();
+                                
+                                for (int tabs = 0; tabs < 8; tabs++) {
+                                    System.out.print("\t");
+                                }
+                                
+                                Random ran = new Random();
+                                System.out.print("brute force testing Linksys keys at 229" + ran.nextInt(3) + " kps");
+                                System.out.println();
                                 for (int y = 0; y <= 7; y++) {
                                     key += (alph.charAt(rand.nextInt(nAlph)));
                                 }
                                 
+                                
+                                for (int tabs = 0; tabs < 8; tabs++) {
+                                    System.out.print("\t");
+                                }
+                                
                                 if (x == 100) {
-                                    System.out.println("current key: notYourWifi");
+                                    System.out.print("current key: notYourWiFi");
                                 } else {
-                                    System.out.println("current key: " + key);
+                                    System.out.print("current key: " + key);
                                 }
                                 key = "";
+                                System.out.println();
+                                
+                                for (int hash = 0; hash < 1000; hash++) {
+                                    if (hash % 100 == 0) {
+                                        System.out.println();
+                                    }
+                                    System.out.print("#");
+                                }
+                                
+                                for (int z = 0; z <= 17; z++) { // Center the text
+                                    System.out.println();
+                                }
                                 
                                 try {
                                     Thread.sleep(100);
@@ -350,22 +273,29 @@ public class Game {
                             }
                             System.out.println();
                             System.out.println("Linksys network cracked!");
-                            System.out.println("key = notYourWifi");
+                            System.out.println("key = notYourWiFi");
                         }
+                    } else {
+                            System.out.println("Error: Missing second argument [WiFi Name]");
                     }
                 } else if (command.getSecondWord().equals("--connect")) {
                     if (command.hasThirdWord()) {
                         switch (command.getThirdWord()) {
                             case "Linksys":
-                                if (command.hasFourthWord()) {
-                                    if (command.getFourthWord().equals("notYourWiFi")) {
-                                        System.out.println("Conected to Linksys network");
-                                        wifi = "Linksys";
+                                if (player.getLocation().equals("home")) {
+                                    if (command.hasFourthWord()) {
+                                        if (command.getFourthWord().equals("notYourWiFi")) {
+                                            System.out.println("Conected to Linksys network");
+                                            wifi = "Linksys";
+                                            ding.levelThree();
+                                        } else {
+                                            System.out.println("You have entered an incorrect password.");
+                                        }
                                     } else {
-                                        System.out.println("You have entered an incorrect password.");
+                                        System.out.println("Error: Missing second argument [password]");
                                     }
                                 } else {
-                                    System.out.println("Error: Missing second argument [password]");
+                                    System.out.println("Linksys is out of range.");
                                 }
                                 break;
                                 
@@ -376,27 +306,36 @@ public class Game {
                     } else {
                         System.out.println("Error: Missing first argument [WiFi Name]");
                     }
-                } else if (command.getSecondWord().equals("--snoop")) {
-                    try {
-                        System.out.println("Available networks:");
-                        Thread.sleep(555);
-                        System.out.println("Anonymous [WPA2 Security]" + "\t");
-                        Thread.sleep(342);
-                        System.out.print("Linksys");
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                } else {
+                    System.out.println(command.getSecondWord() + " is not a command in package [airfrack]");
                 }
             } else {
                 System.out.println(airfrack.getHelp());
             }
             System.out.println();
         }
-        else if (commandWord.equals("bt_snoop")) {
+        else if (commandWord.equals("wifi_snoop")) {
             if (command.hasSecondWord()) {
-                System.out.println("bt_snoop has not been programmed yet.");
+                if (command.getSecondWord().equals("--snoop")) {
+                    try {
+                        Random rand = new Random();
+                        System.out.println("Available networks:");
+                        System.out.println();
+                        Thread.sleep(rand.nextInt(500) + 500);
+                        if (player.getLocation().equals("home")) {
+                            System.out.println("Anonymous [WPA2 Security]" + "\t");
+                            Thread.sleep(rand.nextInt(100) + 300);
+                            System.out.print("Linksys [WEP Security]");
+                        } else {
+                            // TODO: more locations
+                            System.out.println("No networks in range...");
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
             } else {
-                System.out.println(bt_snoop.getHelp());
+                System.out.println(wifi_snoop.getHelp());
             }
             System.out.println();
         }
@@ -416,28 +355,95 @@ public class Game {
             }
             System.out.println();
         }
+        else if (commandWord.equals("tor")) {
+            if (command.hasSecondWord()) {
+                if (command.getSecondWord().equals("--connect")) {
+                    System.out.println();
+                    System.out.print("connecting to the TOR network");
+                    for (int elipses = 0; elipses < 3; elipses++) {
+                        for (int dots = 0; dots < 3; dots++) {
+                            try {
+                                System.out.print(".");
+                                Thread.sleep(500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    System.out.println("TOR networking successfully configured.");
+                } else {
+                    System.out.println(command.getSecondWord() + " is not a command in package [tor]");
+                }
+            } else {
+                System.out.println(tor.getHelp());
+            }
+            System.out.println();
+        }
+        else if (commandWord.equals("connect")) {
+            if (command.hasSecondWord()) {
+                if (command.getSecondWord().equals("--attach")) {
+                    if (command.hasThirdWord()) {
+                        if (command.getThirdWord().equals("/etc/anon_forum.srvr")) {
+                            System.out.println();
+                            System.out.print("connecting to the Anonymous Forum");
+                            for (int elipses = 0; elipses < 3; elipses++) {
+                                for (int dots = 0; dots < 3; dots++) {
+                                    try {
+                                        System.out.print(".");
+                                        Thread.sleep(500);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                            System.out.println("Successfully connected to the anonymous forum.");
+                            forum();
+                        } else {
+                            System.out.println(command.getThirdWord() + " is not a valid .srvr file");
+                        }
+                    }
+                } else {
+                    System.out.println(command.getSecondWord() + " is not a command in package [connect]");
+                }
+            } else {
+                System.out.println(connect.getHelp());
+            }
+            System.out.println();
+        }
         else if ((!rootPassword.equals("abc")) && (commandWord.equals(rootPassword))) {
-            System.out.println("I don't know what you mean...");
+            System.out.println(commandWord + " is not a valid command.");
         }
         else if (commandWord.equals("quit")) {
             wantToQuit = quit(command);
         }
-
         return wantToQuit;
+    }
+    
+    public void forum() { 
+        for (int z = 0; z <= 100; z++) { // Flush the screen (hacky ikr)
+            System.out.println();
+        }
+        
+        ding.anonForum(1);
     }
     
     private void enterPassword() {
         boolean passwording = true;
         
-        passwording = false;
-        isRoot = true;
-        fileLevel = 0;
-        currentDirectory.setValidDirectories(true);
-        beginLevelTwo();
+        // BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR
+        // BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR
+        passwording = false;                            // BACKDOOR
+        isRoot = true;                                  // BACKDOOR
+        fileLevel = 0;                                  // BACKDOOR
+        currentDirectory.setValidDirectories(true);     // BACKDOOR
+        ding.levelTwo();                                // BACKDOOR
+        player.setLocation("home");                     // BACKDOOR
+        // BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR
+        // BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR
                 
         while (passwording) {
             System.out.println("[sudo] root password: ");
-            Command command = parser.getCommand(false);
+            Command command = parser.getCommand(false, false);
             String password = command.getCommandWord();
             
             if ((password != null) && (password.equals(rootPassword))) {
@@ -445,7 +451,8 @@ public class Game {
                 isRoot = true;
                 fileLevel = 0;
                 currentDirectory.setValidDirectories(true);
-                beginLevelTwo();
+                ding.levelTwo();
+                player.setLocation("home");
             } else if ((password != null) && (password.equals("exit"))) {
                 passwording = false;
             } else {
@@ -465,7 +472,7 @@ public class Game {
     private void printLS() {
         printPath();
         if (checkDirectory(0,0)) {
-            TextAttributes attrs = new TextAttributes(Color.GREEN);
+            TextAttributes attrs = new TextAttributes(Color.decode("#6B9023"));
             s_console.setTextAttributes(attrs);
             if (isRoot) {
                 System.out.println("etc" + "\t" + "desktop" + "\t" + "music" + "\t" + "pictures");
@@ -473,17 +480,21 @@ public class Game {
                 System.out.println("desktop" + "\t" + "music" + "\t" + "pictures");
             }
         } else if (checkDirectory(1,0)) {
-            TextAttributes attrs = new TextAttributes(Color.GREEN);
+            TextAttributes attrs = new TextAttributes(Color.decode("#6B9023"));
             s_console.setTextAttributes(attrs);
             System.out.println("backgrounds");
         } else if (checkDirectory(2,0)) {
-            TextAttributes attrs = new TextAttributes(Color.GREEN);
+            TextAttributes attrs = new TextAttributes(Color.decode("#6B9023"));
             s_console.setTextAttributes(attrs);
             System.out.println("beyonce");
         } else if (checkDirectory(3,0)) {
-            TextAttributes attrs = new TextAttributes(Color.BLUE);
+            TextAttributes attrs = new TextAttributes(Color.decode("#236B90"));
             s_console.setTextAttributes(attrs);
             System.out.println("anon_root_pswd.txt");
+        } else if (checkDirectory(0,1)) {
+            TextAttributes attrs = new TextAttributes(Color.decode("#236B90"));
+            s_console.setTextAttributes(attrs);
+            System.out.println("anon_forum.srvr");
         }
         // Back to white!
         TextAttributes attrs = new TextAttributes(Color.WHITE);
@@ -502,11 +513,11 @@ public class Game {
                 currentDirectory.addTool(airfrack);
                 break;
                 
-            case "bt_snoop":
-                bt_snoop = new Tool("use of bt_snoop:" + "\n" +
-                        "--snoop" + "\t" + "find MAC adresses of bluetooth devices");
-                parser.addCommand("bt_snoop");
-                currentDirectory.addTool(bt_snoop);
+            case "wifi_snoop":
+                wifi_snoop = new Tool("use of wifi_snoop:" + "\n" +
+                        "--snoop" + "\t" + "find ESSID of all near WiFi routers");
+                parser.addCommand("wifi_snoop");
+                currentDirectory.addTool(wifi_snoop);
                 break;
                 
             case "spooftooth":
@@ -517,10 +528,17 @@ public class Game {
                 break;
                 
             case "macchanger":
-                spooftooth = new Tool("use of macchanger:" + "\n" +
+                macchanger = new Tool("use of macchanger:" + "\n" +
                         "--auto" + "\t" + "randomly generate a new MAC address");
                 parser.addCommand("macchanger");
-                currentDirectory.addTool(spooftooth);
+                currentDirectory.addTool(macchanger);
+                break;
+                
+            case "tor":
+                tor = new Tool("use of tor:" + "\n" +
+                        "--connect" + "\t" + "start TOR networking");
+                parser.addCommand("tor");
+                currentDirectory.addTool(tor);
                 break;
         }
     }
@@ -609,14 +627,6 @@ public class Game {
         }
         // Refresh cdAble boolean
         cdAble = true;
-    }
-    
-    private void printWithDelays(String data, long delay) throws InterruptedException {
-        for (char ch : data.toCharArray()) {
-            System.out.print(ch);
-            Thread.sleep(delay);
-        }
-        System.out.println();
     }
 
     private boolean quit(Command command) {

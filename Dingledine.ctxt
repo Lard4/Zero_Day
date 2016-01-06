@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.params=
+comment0.target=void\ intro()
+comment1.params=
+comment1.target=void\ levelTwo()
+comment2.params=
+comment2.target=void\ levelThree()
+comment3.params=log
+comment3.target=void\ anonForum(int)
+comment4.params=data\ delay
+comment4.target=void\ printWithDelays(java.lang.String,\ long)
+numComments=5
