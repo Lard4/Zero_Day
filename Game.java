@@ -391,26 +391,46 @@ public class Game {
                                         .getFileSystemView().getHomeDirectory());
                                 System.out.println("Your computer's security has been compromised.");
                                 System.out.println("Your insecure connection has been intercepted by a hacker.");
-                                for (int counter = 0; counter < 10; counter++) {
-                                    trippyPrint("I HAVE TAKEN OVER YOUR COMPUTER!");
-                                    trippyPrint("YOU THINK YOU ARE A PART OF ANONYMOUS?!");
-                                    trippyPrint("WAKE UP, KID!!!");
+                                for (int counter = 1; counter < 200; counter++) {
+                                    if (counter % 25 == 0) {
+                                        trippyPrint("I HAVE TAKEN OVER YOUR COMPUTER!");
+                                        trippyPrint("YOU THINK YOU ARE A PART OF ANONYMOUS?!");
+                                        trippyPrint("WAKE UP, KID!!!");
+                                        System.out.println();
+                                    }
                                     try {
-                                        if (counter < 30) {
-                                            //Process browse = Runtime.getRuntime().exec("google-chrome");
+                                        if (counter < 20) { // Only 20 to ensure the computer will be more than a paperweight at the end
+                                            Process browse = Runtime.getRuntime().exec("google-chrome");
                                         }
-                                        File textFile = new File(home + "/Desktop", "hacked" + counter + ".txt");
+                                        File textFile = new File(home + "/Desktop/hack", "hacked" + counter + ".txt");
                                         BufferedWriter out = new BufferedWriter(new FileWriter(textFile));
-                                        for (int x = 0; x < 50000; x++) {
-                                            out.write("fsociety");
+                                        for (int x = 0; x < 500000; x++) {
                                             if (x % 50 == 0) {
                                                 out.write("\n");
                                             }
+                                            out.write("fsociety  ");
                                         }
                                         out.close();
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
+                                }
+                                try {
+                                    System.out.println();
+                                    trippyPrint("I have created hundreds of files that total about close to 1 gigabyte of data.");
+                                    trippyPrint("I have opened chrome 30 times, and if your computer didn't crash, you are lucky.");
+                                    trippyPrint("I've never found it hard to hack most people.");
+                                    trippyPrint("If you listen to them, watch them, their vulnerabilities are like a neon sign " + 
+                                            "screwed into their head.");
+                                    Thread.sleep(15000);
+                                    trippyPrint("This message will self terminate in:" + "\n" + "3");
+                                    Thread.sleep(1000);
+                                    trippyPrint("2");
+                                    Thread.sleep(1000);
+                                    trippyPrint("1");
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
                                 }
                                 System.exit(0);
                             }
