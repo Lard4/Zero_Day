@@ -1,6 +1,10 @@
 #BlueJ class context
 comment0.params=location
 comment0.target=void\ setLocation(java.lang.String)
-comment1.params=
-comment1.target=java.lang.String\ getLocation()
-numComments=2
+comment1.params=mood
+comment1.target=void\ setMood(java.lang.String)
+comment2.params=
+comment2.target=java.lang.String\ getMood()
+comment3.params=
+comment3.target=java.lang.String\ getLocation()
+numComments=4

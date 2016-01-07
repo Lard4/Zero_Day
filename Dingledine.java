@@ -2,11 +2,11 @@ import java.util.*;
 import java.text.*;
 
 public class Dingledine {
-    private static final long STANDARDDELAY = 80; //80ms
+    private static final long STANDARDDELAY = 0; //80ms
     private static final long LONGDELAY = 0; //110ms
-    private static final long ONESECOND = 1000; //1000ms
-    private static final long TWOSECOND = 2000; //2000ms
-    private static final long FIVESECOND = 5000; //2000ms
+    private static final long ONESECOND = 0; //1000ms
+    private static final long TWOSECOND = 0; //2000ms
+    private static final long FIVESECOND = 0; //2000ms
     private static final long THREEQUARTERSECOND = 0; //750ms
     
     public void intro() {
@@ -158,12 +158,11 @@ public class Dingledine {
         }
     }
     
-    public void anonForum(int log) {
+    public void anonForum(int log, String mood, String name) {
         try {
-            System.out.println("\t" + "\t" + "************ NEW LIVETYPE IRC @ CHANNEL --> #0p1s1s ************");
-            System.out.println();
             switch (log) {
                 case 1:
+                    System.out.println("\t" + "\t" + "************ NEW LIVETYPE IRC @ CHANNEL --> #0p1s1s ************" + "\n");
                     System.out.print(new Clock().getTime() + "| d1ngledino: ");
                     printWithDelays("he seems like a nice guy, but he's a little slow on the uptake, " + 
                             "if you know what i mean...", STANDARDDELAY);
@@ -173,7 +172,7 @@ public class Dingledine {
                     printWithDelays("yeah i get it", STANDARDDELAY);
                     Thread.sleep(TWOSECOND);
                             
-                    System.out.print(new Clock().getTime() + "| > user pudlow3 joined #0p1s1s");
+                    System.out.print(new Clock().getTime() + "| > user " + name + " joined #0p1s1s");
                     Thread.sleep(ONESECOND);
                     System.out.println();
                     
@@ -182,7 +181,7 @@ public class Dingledine {
                     Thread.sleep(ONESECOND);
                     
                     System.out.print(new Clock().getTime() + "| d1ngledino: ");
-                    printWithDelays("pudlow3? i couldn't have come up with a weirder name myself. ", STANDARDDELAY);
+                    printWithDelays(name + "? i couldn't have come up with a weirder name myself. ", STANDARDDELAY);
                     Thread.sleep(ONESECOND);
 
                     System.out.print(new Clock().getTime() + "| XxT0rvaldsxX: ");
@@ -196,9 +195,29 @@ public class Dingledine {
                     System.out.print(new Clock().getTime() + "| d1ngledino: ");
                     printWithDelays("well alright then. you dont have to talk i guess", STANDARDDELAY);
                     break;
+                    
+                case 2:
+                    if (mood != null) {
+                        if (mood.equals("happy")) {
+                            System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                            printWithDelays("hey, he does exist! i'm just kidding kid, glad to hear from ya", STANDARDDELAY);
+                        } else if (mood.equals("mean")) {
+                            System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                            printWithDelays("who shoved a stick up your ass?", STANDARDDELAY);
+                        } else if (mood.equals("sarcastic")) {
+                            System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                            printWithDelays("at least i'm not the kid with the dumb name...", STANDARDDELAY);
+                        } else if (mood.equals("creepy")) {
+                            System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                            printWithDelays("have you ever hear the phrase some things are better left unsaid???", STANDARDDELAY);
+                        }
+                    } else { // Person is 'normal'
+                        System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                        printWithDelays("top of the day to ya, glad to hear from ya", STANDARDDELAY);
+                    }
             }
         } catch (InterruptedException e) {
-            
+            e.printStackTrace();
         }
     }
    
@@ -210,7 +229,7 @@ public class Dingledine {
         System.out.println();
     }
     
-    class Clock {
+    static class Clock {
         public String getTime() {
             return (new SimpleDateFormat("HH:mm:ss").format(new Date()));
         }

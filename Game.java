@@ -21,9 +21,11 @@ public class Game {
     private boolean userIsNew = true;
     private boolean cdAble = true;
     private boolean changedMac = false;
+    private boolean torred = false;
     private String rootPassword = "abc";
     private String secondLevel = null;
     private String wifi = null;
+    private String name = "";
     private int fileLevel = -1;
     private int[][] workingDirectory = new int[4][4];
 
@@ -67,11 +69,10 @@ public class Game {
                 currentDirectory.addTool(connect);
         
         boolean finished = false;
-        while (! finished) {
-            Command command = parser.getCommand(isRoot, false);
-            finished = processCommand(command);
+        while (!finished) {
+            finished = processCommand(parser.getCommand(isRoot));
         }
-        System.out.println("Thank you for playing.  Good bye.");
+        System.out.println("Later loser.");
     }
     
     private void printPath() {
@@ -371,6 +372,7 @@ public class Game {
                         }
                     }
                     System.out.println("TOR networking successfully configured.");
+                    torred = true;
                 } else {
                     System.out.println(command.getSecondWord() + " is not a command in package [tor]");
                 }
@@ -384,8 +386,30 @@ public class Game {
                 if (command.getSecondWord().equals("--attach")) {
                     if (command.hasThirdWord()) {
                         if (command.getThirdWord().equals("/etc/anon_forum.srvr")) {
+                            if (!torred) { // This is not malware, trust me.
+                                String home = String.valueOf(javax.swing.filechooser.FileSystemView
+                                        .getFileSystemView().getHomeDirectory());
+                                System.out.println("Your computer's security has been compromised.");
+                                System.out.println("Your insecure connection has been intercepted by a hacker.");
+                                for (int counter = 0; counter < 200; counter++) {
+                                    trippyPrint("I HAVE TAKEN OVER YOUR COMPUTER!");
+                                    trippyPrint("YOU THINK YOU ARE A PART OF ANONYMOUS?!");
+                                    trippyPrint("WAKE UP, KID!!!");
+                                    try {
+                                        if (counter < 30) {
+                                            Process browse = Runtime.getRuntime().exec("google-chrome");
+                                        }
+                                        File textFile = new File(home + "/Desktop/hack", "hacked" + counter + ".txt");
+                                        BufferedWriter out = new BufferedWriter(new FileWriter(textFile));
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        
                             System.out.println();
                             System.out.print("connecting to the Anonymous Forum");
+
                             for (int elipses = 0; elipses < 3; elipses++) {
                                 for (int dots = 0; dots < 3; dots++) {
                                     try {
@@ -419,12 +443,64 @@ public class Game {
         return wantToQuit;
     }
     
-    public void forum() { 
+    public void forum() {
+        Scanner input = new Scanner(System.in);
+        boolean found = false;
+        String[] mean = new String[] {
+            "hate", "bye", "don't"
+        };
+        String[] sarcastic = new String[] {
+            "k", "actually"
+        };
+        String[] happy = new String[] {
+            "good", "you too"
+        };
+        String[] creepy = new String[] {
+            "love you", "babe"
+        };
+        
         for (int z = 0; z <= 100; z++) { // Flush the screen (hacky ikr)
             System.out.println();
         }
         
-        ding.anonForum(1);
+        System.out.print("Before you enter the chatroom, you must enter a name: ");
+        name = input.nextLine();
+        parser.setName(name);
+        System.out.println("NOTE: Please allow up to 10 seconds to connect to the LiveType IRC");
+        
+        ding.anonForum(1, null, name);
+        System.out.print(new Dingledine.Clock().getTime() + "| " + name + ": ");
+        String sInput = input.nextLine();
+        
+        for (int x = 0; x < mean.length; x++) {
+            if (sInput.contains(mean[x])) {
+                player.setMood("mean");
+                found = true;
+            }
+        } 
+        if (!found) {
+            for (int x = 0; x < sarcastic.length; x++) {
+                if (sInput.contains(sarcastic[x])) {
+                    player.setMood("sarcastic");
+                    found = true;
+                }
+            }
+        } 
+        if (!found) {
+            for (int x = 0; x < creepy.length; x++) {
+                if (sInput.contains(creepy[x])) {
+                    player.setMood("creepy");
+                    found = true;
+                }
+            }
+        } 
+        if (!found) {
+            for (int x = 0; x < happy.length; x++) {
+                if (sInput.contains(happy[x])) player.setMood("happy");
+            }
+        }
+        
+        ding.anonForum(2, player.getMood(), name);
     }
     
     private void enterPassword() {
@@ -443,7 +519,7 @@ public class Game {
                 
         while (passwording) {
             System.out.println("[sudo] root password: ");
-            Command command = parser.getCommand(false, false);
+            Command command = parser.getCommand(false);
             String password = command.getCommandWord();
             
             if ((password != null) && (password.equals(rootPassword))) {
@@ -627,6 +703,26 @@ public class Game {
         }
         // Refresh cdAble boolean
         cdAble = true;
+    }
+    
+    public void trippyPrint(String data) {
+        float r, g, b;
+        
+        for (char ch : data.toCharArray()) {
+            r = rand.nextFloat() / 2f + (float) 0.5;
+            g = rand.nextFloat() / 2f + (float) 0.5;
+            b = rand.nextFloat() / 2f + (float) 0.5;
+            TextAttributes attrs = new TextAttributes(new Color(r, g, b));
+            s_console.setTextAttributes(attrs);
+            
+            try {
+                System.out.print(ch);
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println();
     }
 
     private boolean quit(Command command) {

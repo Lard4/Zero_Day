@@ -1,4 +1,4 @@
-import java.util.Scanner;
+import java.util.*;
 
 public class Parser {
     private CommandWords commands;
@@ -17,15 +17,15 @@ public class Parser {
         return commands.showAll();
     }
     
-    public void setName() {
-        name = reader.nextLine();
+    public void setName(String name) {
+        this.name = name;
     }
     
     public void addCommand(String command) {
         commands.addCommands(command);
     }
 
-    public Command getCommand(boolean root, boolean irc) {
+    public Command getCommand(boolean root) {
         String inputLine;
         String word1 = null;
         String word2 = null;
@@ -36,9 +36,6 @@ public class Parser {
             System.out.print(name + "@anonymous: " + "$ ");
         }
         else {
-            if (irc) {
-                System.out.print(name + ": ");
-            }
             System.out.print(name + "@anonymous: " + "# ");
         }
 
