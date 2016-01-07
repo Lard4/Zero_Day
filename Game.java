@@ -391,20 +391,28 @@ public class Game {
                                         .getFileSystemView().getHomeDirectory());
                                 System.out.println("Your computer's security has been compromised.");
                                 System.out.println("Your insecure connection has been intercepted by a hacker.");
-                                for (int counter = 0; counter < 200; counter++) {
+                                for (int counter = 0; counter < 10; counter++) {
                                     trippyPrint("I HAVE TAKEN OVER YOUR COMPUTER!");
                                     trippyPrint("YOU THINK YOU ARE A PART OF ANONYMOUS?!");
                                     trippyPrint("WAKE UP, KID!!!");
                                     try {
                                         if (counter < 30) {
-                                            Process browse = Runtime.getRuntime().exec("google-chrome");
+                                            //Process browse = Runtime.getRuntime().exec("google-chrome");
                                         }
-                                        File textFile = new File(home + "/Desktop/hack", "hacked" + counter + ".txt");
+                                        File textFile = new File(home + "/Desktop", "hacked" + counter + ".txt");
                                         BufferedWriter out = new BufferedWriter(new FileWriter(textFile));
+                                        for (int x = 0; x < 50000; x++) {
+                                            out.write("fsociety");
+                                            if (x % 50 == 0) {
+                                                out.write("\n");
+                                            }
+                                        }
+                                        out.close();
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
                                 }
+                                System.exit(0);
                             }
                         
                             System.out.println();
