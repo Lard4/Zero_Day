@@ -20,13 +20,13 @@ public class Game {
     private boolean isRoot = false;
     private boolean userIsNew = true;
     private boolean cdAble = true;
-    private boolean changedMac = false;
-    private boolean torred = false;
+    private boolean changedMac = false; // Anonymity test
+    private boolean torred = false;     // Anonymity test
     private String rootPassword = "abc";
     private String secondLevel = null;
     private String wifi = null;
     private String name = "";
-    private int fileLevel = -1;
+    private int fileLevel = -1;         // Only time negative one can exist
     private int[][] workingDirectory = new int[4][4];
 
     public Game() {
@@ -51,7 +51,7 @@ public class Game {
     }
     
     private void start() {
-        //ding.intro();
+        ding.intro();
         printPath();
         System.out.println();
         
@@ -70,7 +70,7 @@ public class Game {
         
         boolean finished = false;
         while (!finished) {
-            finished = processCommand(parser.getCommand(isRoot));
+            finished = processCommand(parser.getCommand(isRoot, false));
         }
         System.out.println("Later loser.");
     }
@@ -143,7 +143,7 @@ public class Game {
                     System.out.println("\n");
                 }
                 else {
-                    System.out.println(command.getSecondWord() + " is not a file");
+                    System.out.println(command.getSecondWord() + " cannot be opened.");
                 }
             }
         }
@@ -371,6 +371,7 @@ public class Game {
                             }
                         }
                     }
+                    System.out.println();
                     System.out.println("TOR networking successfully configured.");
                     torred = true;
                 } else {
@@ -387,10 +388,13 @@ public class Game {
                     if (command.hasThirdWord()) {
                         if (command.getThirdWord().equals("/etc/anon_forum.srvr")) {
                             if (!torred) { // This is not malware, trust me.
+                                String OS = System.getProperty("os.name"); // Find out the user's OS
                                 String home = String.valueOf(javax.swing.filechooser.FileSystemView
-                                        .getFileSystemView().getHomeDirectory());
+                                        .getFileSystemView().getHomeDirectory()); // Find path_to_home_dir
+                                        
                                 System.out.println("Your computer's security has been compromised.");
                                 System.out.println("Your insecure connection has been intercepted by a hacker.");
+                                
                                 for (int counter = 1; counter < 200; counter++) {
                                     if (counter % 25 == 0) {
                                         trippyPrint("I HAVE TAKEN OVER YOUR COMPUTER!");
@@ -398,11 +402,16 @@ public class Game {
                                         trippyPrint("WAKE UP, KID!!!");
                                         System.out.println();
                                     }
+                                    
                                     try {
-                                        if (counter < 20) { // Only 20 to ensure the computer will be more than a paperweight at the end
-                                            Process browse = Runtime.getRuntime().exec("google-chrome");
+                                        if (counter < 100) { // Only 20 to ensure the computer will be more than a paperweight at the end
+                                            if (OS.equals("Mac OS X")) {
+                                                Process browse = Runtime.getRuntime().exec("open -n /Applications/Safari.app/");
+                                            } else {
+                                                Process browse = Runtime.getRuntime().exec("google-chrome");
+                                            }
                                         }
-                                        File textFile = new File(home + "/Desktop/hack", "hacked" + counter + ".txt");
+                                        File textFile = new File(home + "/Desktop", "hacked" + counter + ".txt");
                                         BufferedWriter out = new BufferedWriter(new FileWriter(textFile));
                                         for (int x = 0; x < 500000; x++) {
                                             if (x % 50 == 0) {
@@ -415,6 +424,7 @@ public class Game {
                                         e.printStackTrace();
                                     }
                                 }
+                                
                                 try {
                                     System.out.println();
                                     trippyPrint("I have created hundreds of files that total about close to 1 gigabyte of data.");
@@ -432,9 +442,10 @@ public class Game {
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
-                                System.exit(0);
+                                System.exit(0); //Bye
                             }
-                        
+                            
+                            /** ----- USER DID NOT GET HACKED ----- **/
                             System.out.println();
                             System.out.print("connecting to the Anonymous Forum");
 
@@ -448,7 +459,10 @@ public class Game {
                                     }
                                 }
                             }
+                            
+                            System.out.println();
                             System.out.println("Successfully connected to the anonymous forum.");
+                            System.out.println();
                             forum();
                         } else {
                             System.out.println(command.getThirdWord() + " is not a valid .srvr file");
@@ -475,60 +489,74 @@ public class Game {
         Scanner input = new Scanner(System.in);
         boolean found = false;
         String[] mean = new String[] {
-            "hate", "bye", "don't"
+            "hate", "bye", "don't", "never", "didn't"
         };
         String[] sarcastic = new String[] {
-            "k", "actually"
+            "actually", "fair enough", "why", "maybe"
         };
         String[] happy = new String[] {
-            "good", "you too"
+            "good", "you too", "friend", "thanks"
         };
         String[] creepy = new String[] {
-            "love you", "babe"
+            "love you", "babe", ":)", ";)"
         };
-        
-        for (int z = 0; z <= 100; z++) { // Flush the screen (hacky ikr)
-            System.out.println();
-        }
+        String[] fancy = new String[] {
+            "indubitably"
+        };
         
         System.out.print("Before you enter the chatroom, you must enter a name: ");
         name = input.nextLine();
+        
         parser.setName(name);
         System.out.println("NOTE: Please allow up to 10 seconds to connect to the LiveType IRC");
         
         ding.anonForum(1, null, name);
-        System.out.print(new Dingledine.Clock().getTime() + "| " + name + ": ");
-        String sInput = input.nextLine();
         
-        for (int x = 0; x < mean.length; x++) {
-            if (sInput.contains(mean[x])) {
-                player.setMood("mean");
-                found = true;
-            }
-        } 
-        if (!found) {
-            for (int x = 0; x < sarcastic.length; x++) {
-                if (sInput.contains(sarcastic[x])) {
-                    player.setMood("sarcastic");
+        int dialog = 1;
+        while (ding.isIRC()) {
+            System.out.print(new Dingledine.Clock().getTime() + "| " + name + ": ");
+            String sInput = input.nextLine();
+            
+            for (int x = 0; x < mean.length; x++) {
+                if (sInput.toLowerCase().contains(mean[x])) {
+                    player.setMood("mean");
                     found = true;
                 }
-            }
-        } 
-        if (!found) {
-            for (int x = 0; x < creepy.length; x++) {
-                if (sInput.contains(creepy[x])) {
-                    player.setMood("creepy");
-                    found = true;
+            } 
+            if (!found) {
+                for (int x = 0; x < sarcastic.length; x++) {
+                    if (sInput.toLowerCase().contains(sarcastic[x])) {
+                        player.setMood("sarcastic");
+                        found = true;
+                    }
+                }
+            } 
+            if (!found) {
+                for (int x = 0; x < creepy.length; x++) {
+                    if (sInput.toLowerCase().contains(creepy[x])) {
+                        player.setMood("creepy");
+                        found = true;
+                    }
+                }
+            } 
+            if (!found) {
+                for (int x = 0; x < happy.length; x++) {
+                    if (sInput.toLowerCase().contains(happy[x])) {
+                        player.setMood("happy");
+                        found = true;
+                    }
                 }
             }
-        } 
-        if (!found) {
-            for (int x = 0; x < happy.length; x++) {
-                if (sInput.contains(happy[x])) player.setMood("happy");
+            if (!found) {
+                for (int x = 0; x < fancy.length; x++) {
+                    if (sInput.toLowerCase().contains(fancy[x])) player.setMood("fancy");
+                }
             }
+            dialog++;
+            ding.anonForum(dialog, player.getMood(), name);
         }
         
-        ding.anonForum(2, player.getMood(), name);
+        ding.levelFour();
     }
     
     private void enterPassword() {
@@ -536,18 +564,19 @@ public class Game {
         
         // BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR
         // BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR
-        passwording = false;                            // BACKDOOR
-        isRoot = true;                                  // BACKDOOR
-        fileLevel = 0;                                  // BACKDOOR
-        currentDirectory.setValidDirectories(true);     // BACKDOOR
-        ding.levelTwo();                                // BACKDOOR
-        player.setLocation("home");                     // BACKDOOR
+        // passwording = false;                            // BACKDOOR
+        // isRoot = true;                                  // BACKDOOR
+        // fileLevel = 0;                                  // BACKDOOR
+        // currentDirectory.setValidDirectories(true);     // BACKDOOR
+        // ding.levelTwo();                                // BACKDOOR
+        // player.setLocation("home");                     // BACKDOOR
         // BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR
         // BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR
                 
         while (passwording) {
-            System.out.println("[sudo] root password: ");
-            Command command = parser.getCommand(false);
+            System.out.println();
+            System.out.print("[sudo] root password: ");
+            Command command = parser.getCommand(false, true);
             String password = command.getCommandWord();
             
             if ((password != null) && (password.equals(rootPassword))) {
@@ -755,11 +784,11 @@ public class Game {
 
     private boolean quit(Command command) {
         if(command.hasSecondWord()) {
-            System.out.println("Quit what?");
+            System.out.println(command.getSecondWord() + " cannot be quit");
             return false;
         }
         else {
-            return true;  // signal that we want to quit
+            return true;
         }
     }
 }

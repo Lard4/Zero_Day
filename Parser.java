@@ -25,7 +25,7 @@ public class Parser {
         commands.addCommands(command);
     }
 
-    public Command getCommand(boolean root) {
+    public Command getCommand(boolean root, boolean noPrint) {
         String inputLine;
         String word1 = null;
         String word2 = null;
@@ -33,10 +33,14 @@ public class Parser {
         String word4 = null;
 
         if (!root) {
-            System.out.print(name + "@anonymous: " + "$ ");
+            if (!noPrint) {
+                System.out.print(name + "@anonymous: " + "$ ");
+            }
         }
         else {
-            System.out.print(name + "@anonymous: " + "# ");
+            if (!noPrint) {
+                System.out.print(name + "@anonymous: " + "# ");
+            }
         }
 
         inputLine = reader.nextLine();
