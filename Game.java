@@ -4,6 +4,7 @@
  */
 import java.util.*;
 import java.io.*;
+import java.net.*;
 import java.awt.Color; 
 import enigma.console.*;
 import enigma.core.Enigma;
@@ -20,15 +21,15 @@ public class Game {
     
     private boolean isRoot = false;
     private boolean userIsNew = true;
-    private boolean cdAble = true;
     private boolean changedMac = false; // Anonymity test
     private boolean torred = false;     // Anonymity test
     private String rootPassword = "abc";
     private String secondLevel = null;
     private String wifi = null;
     private String name = "";
-    private int fileLevel = -1;         // Only time negative one can exist
-    private int[][] workingDirectory = new int[4][4];
+    
+    private static final String GREEN = "#6B9023";
+    private static final String BLUE = "#236B90";
 
     public Game() {
         // Enigma Console garb
@@ -52,18 +53,11 @@ public class Game {
     }
     
     private void start() {
-        ding.intro();
+        //ding.intro();
         printPath();
         System.out.println();
         
-        for (int row = 0; row < workingDirectory.length; row++) {
-            for (int col = 0; col < workingDirectory[row].length; col++) {
-                workingDirectory[row][col] = 0;
-            }
-        }
-        
         // Pre-game neccessary operations
-        workingDirectory[0][0] = 314;
         connect = new Tool("use of connect:" + "\n" +
                         "--attach [PATH_TO_SERVER_POWER]" + "\t" + "to connect to a server");
                 parser.addCommand("connect");
@@ -78,6 +72,49 @@ public class Game {
     
     private void printPath() {
         System.out.print(currentDirectory.getPath());
+        System.out.println();
+        
+        if (currentDirectory.getCurrentDirectory().equals("/")) {
+            TextAttributes attrs = new TextAttributes(Color.decode(GREEN));
+            s_console.setTextAttributes(attrs);
+            if (isRoot) {
+                System.out.println("etc" + "\t" + "desktop" + "\t" + "music" + "\t" + "pictures");
+            } else {
+                System.out.println("desktop" + "\t" + "music" + "\t" + "pictures");
+            }
+        } else if (currentDirectory.getCurrentDirectory().equals("pictures")) {
+            TextAttributes attrs = new TextAttributes(Color.decode(GREEN));
+            s_console.setTextAttributes(attrs);
+            System.out.println("backgrounds");
+        } else if (currentDirectory.getCurrentDirectory().equals("music")) {
+            TextAttributes attrs = new TextAttributes(Color.decode(GREEN));
+            s_console.setTextAttributes(attrs);
+            System.out.println("beyonce");
+        } else if (currentDirectory.getCurrentDirectory().equals("desktop")) {
+            TextAttributes attrs = new TextAttributes(Color.decode(GREEN));
+            s_console.setTextAttributes(attrs);
+            System.out.println("my_stuff");
+        } else if (currentDirectory.getCurrentDirectory().equals("my_stuff")) {
+            TextAttributes attrs = new TextAttributes(Color.decode(BLUE));
+            s_console.setTextAttributes(attrs);
+            System.out.println("anon_root_pswd.txt");
+        } else if (currentDirectory.getCurrentDirectory().equals("beyonce")) {
+            TextAttributes attrs = new TextAttributes(Color.decode(BLUE));
+            s_console.setTextAttributes(attrs);
+            System.out.println("beyonce_music.flac");
+        } else if (currentDirectory.getCurrentDirectory().equals("backgrounds")) {
+            TextAttributes attrs = new TextAttributes(Color.decode(BLUE));
+            s_console.setTextAttributes(attrs);
+            System.out.println("family_trip.png");
+        } else if (currentDirectory.getCurrentDirectory().equals("etc")) {
+            TextAttributes attrs = new TextAttributes(Color.decode(BLUE));
+            s_console.setTextAttributes(attrs);
+            System.out.println("anon_forum.srvr");
+        }
+        // Back to white!
+        TextAttributes attrs = new TextAttributes(Color.WHITE);
+        s_console.setTextAttributes(attrs);
+        // New line
         System.out.println();
     }
     
@@ -132,7 +169,8 @@ public class Game {
         }
         else if (commandWord.equals("open")) {
             if (command.hasSecondWord() != false) {
-                if ((command.getSecondWord().equals("anon_root_pswd.txt")) && (checkDirectory(3, 0))) {
+                if ((command.getSecondWord().equals("anon_root_pswd.txt")) && 
+                    (currentDirectory.getCurrentDirectory().equals("my_stuff"))) {
                     final String alph = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+{}[]/>?<~";
                     final int nAlph = alph.length();
                     for (int x = 0; x <= 7; x++) {
@@ -178,9 +216,9 @@ public class Game {
                             System.out.println("tor successfully installed!");
                             break;
                             
-                        case "seversearcher":
-                            installTool("seversearcher");
-                            System.out.println("seversearcher successfully installed!");
+                        case "serversearcher":
+                            installTool("serversearcher");
+                            System.out.println("serversearcher successfully installed!");
                             break;
                             
                         default:
@@ -356,7 +394,27 @@ public class Game {
         }
         else if (commandWord.equals("macchanger")) {
             if (command.hasSecondWord()) {
-                System.out.println("macchanger has not been programmed yet.");
+                if (command.getSecondWord().equals("--auto")) {
+                    changedMac = true;
+                    try {
+                        InetAddress ip = InetAddress.getLocalHost();
+                        NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+                        
+                        byte[] mac = network.getHardwareAddress();
+                        
+                        System.out.print("New MAC address: ");
+                        
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < mac.length; i++) {
+                            sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));        
+                        }
+                        System.out.println(sb.toString());
+                    } catch (UnknownHostException e) {
+                        e.printStackTrace();
+                    } catch (SocketException e){
+                        e.printStackTrace();
+                    }
+                }
             } else {
                 System.out.println(macchanger.getHelp());
             }
@@ -393,7 +451,7 @@ public class Game {
                 if (command.getSecondWord().equals("--attach")) {
                     if (command.hasThirdWord()) {
                         if (command.getThirdWord().equals("/etc/anon_forum.srvr")) {
-                            if (!torred) { // This is not malware, trust me.
+                            if (!torred || !changedMac) { // This is not malware, trust me.
                                 String OS = System.getProperty("os.name"); // Find out the user's OS
                                 String home = String.valueOf(javax.swing.filechooser.FileSystemView
                                         .getFileSystemView().getHomeDirectory()); // Find path_to_home_dir
@@ -401,7 +459,7 @@ public class Game {
                                 System.out.println("Your computer's security has been compromised.");
                                 System.out.println("Your insecure connection has been intercepted by a hacker.");
                                 
-                                for (int counter = 1; counter < 200; counter++) {
+                                for (int counter = 1; counter < 10; counter++) {
                                     if (counter % 25 == 0) {
                                         trippyPrint("I HAVE TAKEN OVER YOUR COMPUTER!");
                                         trippyPrint("YOU THINK YOU ARE A PART OF ANONYMOUS?!");
@@ -410,7 +468,7 @@ public class Game {
                                     }
                                     
                                     try {
-                                        if (counter < 100) { // Only 20 to ensure the computer will be more than a paperweight at the end
+                                        if (counter < 20) { // Only 20 to ensure the computer will be more than a paperweight at the end
                                             if (OS.equals("Mac OS X")) {
                                                 Process browse = Runtime.getRuntime().exec("open -n /Applications/Safari.app/");
                                             } else {
@@ -482,8 +540,17 @@ public class Game {
             }
             System.out.println();
         }
-        else if (commandWord.equals("seversearcher")) {
-            System.out.println("serversearcher has not been programmed yet.");
+        else if (commandWord.equals("serversearcher")) {
+            if (command.hasSecondWord()) {
+                if (command.getSecondWord().equals("--url")) {
+                    if (command.hasThirdWord()) {
+                        String url = command.getThirdWord();
+                        currentDirectory.addFile(url);
+                    }
+                }
+            } else {
+                System.out.println(serversearcher.getHelp());
+            }
         }
         else if ((!rootPassword.equals("abc")) && (commandWord.equals(rootPassword))) {
             System.out.println(commandWord + " is not a valid command.");
@@ -573,12 +640,11 @@ public class Game {
         
         // BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR
         // BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR
-        // passwording = false;                            // BACKDOOR
-        // isRoot = true;                                  // BACKDOOR
-        // fileLevel = 0;                                  // BACKDOOR
-        // currentDirectory.setValidDirectories(true);     // BACKDOOR
-        // ding.levelTwo();                                // BACKDOOR
-        // player.setLocation("home");                     // BACKDOOR
+        passwording = false;                            // BACKDOOR
+        isRoot = true;                                  // BACKDOOR
+        currentDirectory.setValidDirectories(true);     // BACKDOOR
+        ding.levelTwo();                                // BACKDOOR
+        player.setLocation("home");                     // BACKDOOR
         // BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR
         // BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR BACKDOOR
                 
@@ -591,7 +657,6 @@ public class Game {
             if ((password != null) && (password.equals(rootPassword))) {
                 passwording = false;
                 isRoot = true;
-                fileLevel = 0;
                 currentDirectory.setValidDirectories(true);
                 ding.levelTwo();
                 player.setLocation("home");
@@ -603,46 +668,8 @@ public class Game {
         }
     }
     
-    private boolean checkDirectory(int row, int col) {
-        if (workingDirectory[row][col] == 314) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-    
     private void printLS() {
         printPath();
-        if (checkDirectory(0,0)) {
-            TextAttributes attrs = new TextAttributes(Color.decode("#6B9023"));
-            s_console.setTextAttributes(attrs);
-            if (isRoot) {
-                System.out.println("etc" + "\t" + "desktop" + "\t" + "music" + "\t" + "pictures");
-            } else {
-                System.out.println("desktop" + "\t" + "music" + "\t" + "pictures");
-            }
-        } else if (checkDirectory(1,0)) {
-            TextAttributes attrs = new TextAttributes(Color.decode("#6B9023"));
-            s_console.setTextAttributes(attrs);
-            System.out.println("backgrounds");
-        } else if (checkDirectory(2,0)) {
-            TextAttributes attrs = new TextAttributes(Color.decode("#6B9023"));
-            s_console.setTextAttributes(attrs);
-            System.out.println("beyonce");
-        } else if (checkDirectory(3,0)) {
-            TextAttributes attrs = new TextAttributes(Color.decode("#236B90"));
-            s_console.setTextAttributes(attrs);
-            System.out.println("anon_root_pswd.txt");
-        } else if (checkDirectory(0,1)) {
-            TextAttributes attrs = new TextAttributes(Color.decode("#236B90"));
-            s_console.setTextAttributes(attrs);
-            System.out.println("anon_forum.srvr");
-        }
-        // Back to white!
-        TextAttributes attrs = new TextAttributes(Color.WHITE);
-        s_console.setTextAttributes(attrs);
-        // New line
-        System.out.println();
     }
 
     private void installTool(String sTool) {
@@ -698,84 +725,56 @@ public class Game {
     }
     
     private void cdTo(Command command) {
-        if(!command.hasSecondWord()) {
-            currentDirectory.setPath("", false);
-            workingDirectory[0][0] = 314;
-            cdAble = true;
+        if (!command.hasSecondWord()) {
+            currentDirectory.setPath("");
             printPath();
             System.out.println();
             return;
         }
-
+        
+        /** USER SPECIFIED DIRECTORY **/
         String newDirectory = command.getSecondWord();
         
-        if (userIsNew) {
-            workingDirectory = currentDirectory.getDirectoryLocation(newDirectory);
-            userIsNew = false;
-        } else {
-            if ((cdAble) && (!newDirectory.equals(".."))) {
-                workingDirectory = currentDirectory.getDirectoryLocation(newDirectory);
-            } else if (newDirectory.equals("..")) {
-                cdAble = true;
-            } else {
-                System.out.println(newDirectory + " is not a file or directory");
-                return;
-            }
-        }
-        
-        switch (newDirectory) {
-            case "root":
-                cdAble = true;
-                fileLevel = 0;
+        switch (currentDirectory.getCurrentDirectory()) {
+            case "/":
+                if (newDirectory.equals("pictures") || newDirectory.equals("music") || newDirectory.equals("desktop") || 
+                    (newDirectory.equals("etc") && isRoot)) {
+                    currentDirectory.setPath(newDirectory);
+                } else {
+                    System.out.println(newDirectory + " is not a file or directory");
+                }
                 break;
                 
             case "pictures":
-                cdAble = true;
-                fileLevel = 1;
+                if (newDirectory.equals("backgrounds")) {
+                    currentDirectory.setPath(newDirectory);
+                } else {
+                    System.out.println(newDirectory + " is not a file or directory");
+                }
                 break;
                 
             case "music":
-                cdAble = true;
-                fileLevel = 2;
+                if (newDirectory.equals("beyonce")) {
+                    currentDirectory.setPath(newDirectory);
+                } else {
+                    System.out.println(newDirectory + " is not a file or directory");
+                }
                 break;
                 
             case "desktop":
-                cdAble = true;
-                fileLevel = 3;
-                break;
-                
-            case "..":
-                cdAble = true;
+                if (newDirectory.equals("my_stuff")) {
+                    currentDirectory.setPath(newDirectory);
+                } else {
+                    System.out.println(newDirectory + " is not a file or directory");
+                }
                 break;
                 
             default:
-                 cdAble = false;
-                 break;
+                System.out.println(newDirectory + " is not a file or directory");
+                return;
         }
         
-        if (currentDirectory.directoryExists(newDirectory, fileLevel)) {
-            if (currentDirectory.directoryIsParent(newDirectory)) {
-                currentDirectory.setPath(newDirectory, false);
-            } else {
-                currentDirectory.setPath(newDirectory, true);
-            }
-            if (newDirectory.equals("etc")) {
-                secondLevel = "etc";
-            } else {
-                secondLevel = null;
-            }
-            printPath();
-            System.out.println();
-        } else {
-            if (newDirectory.equals("..")) {
-                workingDirectory = currentDirectory.goBack(workingDirectory, fileLevel);
-                printPath();
-            } else {
-                System.out.println(newDirectory + " is not a file or directory");
-            }
-        }
-        // Refresh cdAble boolean
-        cdAble = true;
+        printPath();
     }
     
     public void trippyPrint(String data) {

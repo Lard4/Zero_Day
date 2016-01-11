@@ -5,12 +5,12 @@ import java.net.*;
 public class Dingledine {
     private boolean isIRC = true;
     
-    private static final long STANDARDDELAY = 30; //80ms
-    private static final long LONGDELAY = 110; //110ms
-    private static final long ONESECOND = 1000; //1000ms
-    private static final long TWOSECOND = 2000; //2000ms
-    private static final long FIVESECOND = 5000; //2000ms
-    private static final long THREEQUARTERSECOND = 750; //750ms
+    private static final long STANDARDDELAY = 0; //80ms
+    private static final long LONGDELAY = 0; //110ms
+    private static final long ONESECOND = 0; //1000ms
+    private static final long TWOSECOND = 0; //2000ms
+    private static final long FIVESECOND = 0; //2000ms
+    private static final long THREEQUARTERSECOND = 0; //750ms
     
     private InetAddress IP;
     
@@ -68,7 +68,7 @@ public class Dingledine {
             Thread.sleep(TWOSECOND);
             
             printWithDelays("With that in mind, I wish you good luck.", STANDARDDELAY);
-            printWithDelays("We're all counting on you.", 200); //200
+            printWithDelays("We're all counting on you.", 0); //200
             System.out.println();
             System.out.println("------------------------------------------------------------------------");
             System.out.println();
@@ -102,7 +102,6 @@ public class Dingledine {
             e.printStackTrace();
         }
         System.out.println();
-        
     }
     
     public void levelTwo() {
@@ -115,6 +114,10 @@ public class Dingledine {
             printWithDelays("Your next task is to hack into your neighbor's WiFi.", STANDARDDELAY);
             printWithDelays("Your neighbor has gigabit internet speeds via his fiber connection.", STANDARDDELAY);
             printWithDelays("Taking advatage of these internet speeds is a necessity.", STANDARDDELAY);
+            Thread.sleep(ONESECOND);
+            System.out.println();
+            
+            printWithDelays("You must use a tool called 'macchanger' to stay anonymous on the WiFi.", STANDARDDELAY);
             printWithDelays("Remember, you must remain anonymous at all costs.", STANDARDDELAY);
             Thread.sleep(ONESECOND);
             System.out.println();
@@ -125,7 +128,7 @@ public class Dingledine {
             printWithDelays("Now, for a little instruction.", STANDARDDELAY);
             printWithDelays("You must use the command 'install' to install different penetration tools.", STANDARDDELAY);
             printWithDelays("Use install followed by any of the following tools to install them:", STANDARDDELAY);
-            System.out.println("airfrack" + "\t" + "wifi_snoop" + "\t" + "spooftooth" + "\t" + "macchanger");
+            System.out.println("airfrack" + "\t" + "wifi_snoop" + "\t" + "macchanger" + "\t" + "serversearcher");
             Thread.sleep(ONESECOND);
             System.out.println();
             

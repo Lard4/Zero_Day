@@ -6,183 +6,122 @@ import java.util.*;
 
 public class Directory {
     private String path;
+    private String currentDir;
     private int level;
-    private String[][] validDirectories;
+    private ArrayList <ArrayList<ArrayList<String>>> validDirectoriesRoot = 
+            new ArrayList <ArrayList<ArrayList<String>>>();
     
-    private HashMap <String, Directory> exits;
+    private ArrayList <ArrayList<String>> root = new ArrayList <ArrayList<String>>();
+        private ArrayList <String> etc = new ArrayList <String>();
+        
+    private ArrayList <ArrayList<String>> pictures = new ArrayList <ArrayList<String>>();
+        private ArrayList <String> backgrounds = new ArrayList <String>();
+    
+    private ArrayList <ArrayList<String>> music = new ArrayList <ArrayList<String>>();
+        private ArrayList <String> beyonce = new ArrayList <String>();
+        
+    private ArrayList <ArrayList<String>> desktop = new ArrayList <ArrayList<String>>();
+        private ArrayList <String> myStuff = new ArrayList <String>();
+    
     private ArrayList <Tool> tools = new ArrayList <Tool>();
     
     private CommandWords commandWords = new CommandWords();
     
     public Directory(String path) {
         this.path = path;
-        validDirectories = new String[4][4];
-        
-        for (int row = 0; row < validDirectories.length; row++) {
-            for (int col = 0; col < validDirectories[row].length; col++) {
-                validDirectories[row][col] = "";
-            }
-        }
+        currentDir = "/";
         setValidDirectories(false);
-        exits = new HashMap<String, Directory>();
+    }
+    
+    public void addFile(String newFile) {
+        myStuff.add(newFile);
+        desktop.add(myStuff);
+        validDirectoriesRoot.add(desktop);
     }
     
     public void setValidDirectories(boolean isRoot) {
         if (isRoot) {
-            validDirectories[0][0] = "root";
-            validDirectories[0][1] = "etc";
+            etc.add("anon_forum.srvr");
+            root.add(etc);
+            validDirectoriesRoot.add(root);
         } else {
-            validDirectories[1][0] = "pictures";
-                validDirectories[1][1] = "backgrounds";
+            backgrounds.add("family_trip.png");
+            pictures.add(backgrounds);
             
-            validDirectories[2][0] = "music";
-                validDirectories [2][1] = "beyonce";
+            beyonce.add("beyonce_music.flac");
+            music.add(beyonce);
             
-            validDirectories[3][0] = "desktop";
+            myStuff.add("zero_day.zip");
+            desktop.add(myStuff);
+            
+            validDirectoriesRoot.add(pictures);
+            validDirectoriesRoot.add(music);
+            validDirectoriesRoot.add(desktop);
         }
     }
     
     public boolean directoryIsParent(String newDirectory) {
-        boolean isParent = false;
-        
-        for (int row = 0; row < validDirectories.length; row++) {
-            if (validDirectories[row][0].equals(newDirectory)) {
-                return true;
-            } else {
-                isParent = false;
-            }
+        if (newDirectory.equals("root") || newDirectory.equals("pictures") || newDirectory.equals("music") || 
+            newDirectory.equals("desktop")) {
+            return true;
+        } else {
+            return false;
         }
-        return isParent;
-    }
-
-    public String getExitString() {
-        String exitString = "Exits: ";
-        
-        Set <String> keys = exits.keySet();
-        for (String exit : keys) {
-            exitString += " " + exit;
-        }
-        
-        return exitString;
-    }
-    
-    public boolean directoryExists(String newDirectory, int fileLevel) {
-        boolean exists = false;
-        
-        for (int row = 0; row < validDirectories.length; row++) {
-            if (validDirectories[row][0].equals(newDirectory)) {
-                exists = true;
-            } else {
-                for (int col = 0; col < validDirectories[row].length; col++) {
-                    if (validDirectories[row][col].equals(newDirectory)) {
-                        if(fileLevel == row){
-                            exists = true;
-                        }
-                    }
-                }
-            }
-        }
-        
-        return exists;
-    }
-    
-    public int[][] getDirectoryLocation(String directory) {
-        int[][] location = new int[validDirectories.length][validDirectories[0].length];
-        
-        for (int row = 0; row < location.length; row++) {
-            for (int col = 0; col < location[row].length; col++) {
-                location[row][col] = 0;
-            }
-        }
-        
-        for (int row = 0; row < location.length; row++) {
-            if (validDirectories[row][0].equals(directory)) {
-                location[row][0] = 314;
-            } else {
-                for (int col = 0; col < location[row].length; col++) {
-                    if (validDirectories[row][col].equals(directory)) {
-                        location[row][col] = 314;
-                    }
-                }
-            }
-        }
-        return location;
-    }
-    
-    public int[][] goBack(int[][] workingDirectory, int fileLevel) {
-        int targetRow = 0;
-        int targetCol = 0;
-        int[][] newPath = new int[4][4];
-        
-        for (int row = 0; row < newPath.length; row++) {
-            for (int col = 0; col < newPath[row].length; col++) {
-                newPath[row][col] = 0;
-            }
-        }
-        
-        for (int row = 0; row < workingDirectory.length; row++) {
-            for (int col = 0; col < workingDirectory[row].length; col++) {
-                if (workingDirectory[row][col] == 314) {
-                    switch (row) {
-                        case 0:
-                            path = "/";
-                            break;
-                            
-                        case 1:
-                            if (col == 0) {
-                                path = "/";
-                            } else if (col == 1) {
-                                path = "/pictures";
-                            }
-                            break;
-                            
-                        case 2:
-                            if (col == 0) {
-                                path = "/";
-                            } else if (col == 1) {
-                                path = "/music";
-                            }
-                            break;
-                            
-                        case 3:
-                            if (col == 0) {
-                                path = "/";
-                            } else if (col == 1) {
-                                path = "/desktop";
-                            }
-                            break;
-                    }
-                }
-            }
-        }
-        
-        for (int row = 0; row < workingDirectory.length; row++) {
-            for (int col = 0; col < workingDirectory[row].length; col++) {
-                if (workingDirectory[row][col] == 314) {
-                    targetRow = row;
-                    targetCol = col - 1;
-                    if (targetCol < 0) {
-                        newPath[0][0] = 314; // User is at top and wants to go to /
-                    } else {
-                        newPath[targetRow][targetCol] = 314;
-                    }
-                    return newPath;
-                }
-            }
-        }
-        return newPath;
     }
     
     public void addTool(Tool tool) {
         tools.add(tool);
     }
     
-    public void setPath(String newDirectory, boolean append) {
-        if (append) {
-            path += "/" + newDirectory;
-        } else {
-            path = "/" + newDirectory;
+    public void setPath(String newDirectory) {
+        switch (newDirectory) {
+            case "":
+                path = "/";
+                currentDir = "/";
+                break;
+               
+            /**  CAN ONLY CD FROM 'ROOT' **/
+            case "pictures":
+                path = "/pictures";
+                currentDir = "pictures";
+                break;
+                
+            case "music":
+                path = "/music";
+                currentDir = "music";
+                break;
+                
+            case "desktop":
+                path = "/desktop";
+                currentDir = "desktop";
+                break;
+                
+            
+            /**  CAN ONLY CD FROM RESPECTIVE PARENT **/    
+            case "backgrounds":
+                path = "/pictures/backgrounds";
+                currentDir = "backgrounds";
+                break;
+                
+            case "beyonce":
+                path = "/music/beyonce";
+                currentDir = "beyonce";
+                break;
+                
+            case "my_stuff":
+                path = "/desktop/my_stuff";
+                currentDir = "my_stuff";
+                break;
+                
+            case "etc":
+                path = "/etc";
+                currentDir = "etc";
+                break;
         }
+    }
+    
+    public String getCurrentDirectory() {
+        return currentDir;
     }
     
     public String getPath() {
