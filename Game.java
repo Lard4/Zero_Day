@@ -11,9 +11,10 @@ import enigma.core.Enigma;
 public class Game {
     private Parser parser;
     private Player player = new Player();
+    private Firewall level0, level1, level2, level3;
     private Dingledine ding = new Dingledine();
     private Directory currentDirectory;
-    private Tool airfrack, spooftooth, wifi_snoop, macchanger, tor, connect;
+    private Tool airfrack, spooftooth, wifi_snoop, macchanger, tor, connect, serversearcher;
     private enigma.console.Console s_console;
     private Random rand = new Random();
     
@@ -175,6 +176,11 @@ public class Game {
                         case "tor":
                             installTool("tor");
                             System.out.println("tor successfully installed!");
+                            break;
+                            
+                        case "seversearcher":
+                            installTool("seversearcher");
+                            System.out.println("seversearcher successfully installed!");
                             break;
                             
                         default:
@@ -476,6 +482,9 @@ public class Game {
             }
             System.out.println();
         }
+        else if (commandWord.equals("seversearcher")) {
+            System.out.println("serversearcher has not been programmed yet.");
+        }
         else if ((!rootPassword.equals("abc")) && (commandWord.equals(rootPassword))) {
             System.out.println(commandWord + " is not a valid command.");
         }
@@ -672,6 +681,13 @@ public class Game {
                         "--connect" + "\t" + "start TOR networking");
                 parser.addCommand("tor");
                 currentDirectory.addTool(tor);
+                break;
+                
+            case "serversearcher":
+                serversearcher = new Tool("use of serversearcher:" + "\n" +
+                        "--url [URL]" + "\t" + "to save the srvr.frw file");
+                parser.addCommand("serversearcher");
+                currentDirectory.addTool(serversearcher);
                 break;
         }
     }

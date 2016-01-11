@@ -335,9 +335,21 @@ public class Dingledine {
             Thread.sleep(ONESECOND);
             System.out.println();
             
-            printWithDelays("This is the end of the alpha 1 test.", STANDARDDELAY);
-            printWithDelays("Consider yourself a newb at hacking.", STANDARDDELAY);
-            printWithDelays("I promise, soon enough you will be able to hack ISIS.", STANDARDDELAY);
+            printWithDelays("In your next mission, you will have to crack into the VPNSecure.com firewall.", STANDARDDELAY);
+            printWithDelays("Breaking through firewalls is one of the hardest parts of hacking.", STANDARDDELAY);
+            printWithDelays("But don't worry, I'll tell you all you need to know in order to succeed.", STANDARDDELAY);
+            Thread.sleep(ONESECOND);
+            System.out.println();
+            
+            printWithDelays("First, you're going to need to install a tool called 'serversearcher'", STANDARDDELAY);
+            printWithDelays("seversearcher will take a URL of a website and save the server's firewall file.", STANDARDDELAY);
+            printWithDelays("Unlike before, these files will actually be written to your physical desktop.", STANDARDDELAY);
+            Thread.sleep(ONESECOND);
+            System.out.println();
+            
+            printWithDelays("Then, you will use 'send' (it comes preinstalled) to send a virus in /etc to the firewall.", STANDARDDELAY);
+            printWithDelays("The virus will return a series of possible passwords to crack into the firewall.", STANDARDDELAY);
+            printWithDelays("Once you brute force through all the passwords, you will have full control over the servers.", STANDARDDELAY);
             Thread.sleep(ONESECOND);
             System.out.println();
             
