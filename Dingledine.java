@@ -1,3 +1,6 @@
+import java.awt.Color; 
+import enigma.console.*;
+import enigma.core.Enigma;
 import java.util.*;
 import java.text.*;
 import java.net.*;
@@ -180,36 +183,36 @@ public class Dingledine {
                         System.out.println();
                     }
                     System.out.println("\t" + "\t" + "************ NEW LIVETYPE IRC @ CHANNEL --> #0p1s1s ************" + "\n");
-                    System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                     printWithDelays("he seems like a nice guy, but he's a little slow on the uptake, " + 
                             "if you know what i mean...", STANDARDDELAY);
                     Thread.sleep(ONESECOND);
                     
-                    System.out.print(new Clock().getTime() + "| XxT0rvaldsxX: ");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| XxT0rvaldsxX: ");
                     printWithDelays("yeah i get it", STANDARDDELAY);
                     Thread.sleep(TWOSECOND);
                             
-                    System.out.print(new Clock().getTime() + "| > user " + name + " joined #0p1s1s");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| > user " + name + " joined #0p1s1s");
                     Thread.sleep(ONESECOND);
                     System.out.println();
                     
-                    System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                     printWithDelays("oh hey, you're here... finally...", STANDARDDELAY);
                     Thread.sleep(ONESECOND);
                     
-                    System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                     printWithDelays(name + "? i couldn't have come up with a weirder name myself. ", STANDARDDELAY);
                     Thread.sleep(ONESECOND);
 
-                    System.out.print(new Clock().getTime() + "| XxT0rvaldsxX: ");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| XxT0rvaldsxX: ");
                     printWithDelays("is this that dude you were talking about", STANDARDDELAY);
                     Thread.sleep(ONESECOND);
                             
-                    System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                     printWithDelays("yup, this is the newbie. say hi, newbie", STANDARDDELAY);
                     Thread.sleep(FIVESECOND);
                     
-                    System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                     printWithDelays("well alright then. you dont have to talk i guess", STANDARDDELAY);
                     break;
                     
@@ -222,63 +225,63 @@ public class Dingledine {
                     
                     if (mood != null) {
                         if (mood.equals("happy")) {
-                            System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                            changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                             printWithDelays("hey, he does exist! i'm just kidding kid, glad to hear from ya", STANDARDDELAY);
                         } else if (mood.equals("mean")) {
-                            System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                            changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                             printWithDelays("somebody woke up on the wrong side of the bed...", STANDARDDELAY);
                         } else if (mood.equals("sarcastic")) {
-                            System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                            changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                             printWithDelays("at least i'm not the kid with the dumb name...", STANDARDDELAY);
                         } else if (mood.equals("creepy")) {
-                            System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                            changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                             printWithDelays("have you ever hear the phrase some things are better left unsaid???", STANDARDDELAY);
                         } else if (mood.equals("fancy")) {
-                            System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                            changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                             printWithDelays("mmmm salutations, good sir!", STANDARDDELAY);
                         }
                     } else { // Person is 'normal'
-                        System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                        changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                         printWithDelays("top of the day to mr " + name + ", glad to hear from ya", STANDARDDELAY);
                     }
                     
-                    System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                     printWithDelays("anyways, this is the guy i was talking about. his name is linus torvalds.", STANDARDDELAY);
                     Thread.sleep(ONESECOND);
                     
-                    System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                     printWithDelays("he is our go-to guy for when we need to set up a VPN.", STANDARDDELAY);
                     Thread.sleep(ONESECOND);
                     
-                    System.out.print(new Clock().getTime() + "| XxT0rvaldsxX: ");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| XxT0rvaldsxX: ");
                     printWithDelays("yeah vpns are my thing. i make a living off of setting these up for people since i live in North Korea.", STANDARDDELAY);
                     Thread.sleep(ONESECOND);
                     
-                    System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                     printWithDelays("North Korea does not hand over any information to the US, so North Korean vpns are the most secure.", STANDARDDELAY);
                     Thread.sleep(ONESECOND);
                     
-                    System.out.print(new Clock().getTime() + "| XxT0rvaldsxX: ");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| XxT0rvaldsxX: ");
                     printWithDelays("yep, so what are you trying to do again?", STANDARDDELAY);
                     Thread.sleep(ONESECOND);
                     
-                    System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                     printWithDelays("this operation is on a strict need-to-know basis. we just need a vpn in NK, Russia, and Sweden.", STANDARDDELAY);
                     Thread.sleep(ONESECOND);
                     
-                    System.out.print(new Clock().getTime() + "| XxT0rvaldsxX: ");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| XxT0rvaldsxX: ");
                     printWithDelays("ok, easy enough. what's your public IP?", STANDARDDELAY);
                     Thread.sleep(ONESECOND);
                     
-                    System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                     printWithDelays("i'll find out for you... one sec", STANDARDDELAY);
                     Thread.sleep(ONESECOND);
                     
-                    System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                     printWithDelays(String.valueOf(IP.getHostAddress()), STANDARDDELAY);
                     Thread.sleep(ONESECOND);
                     
-                    System.out.print(new Clock().getTime() + "| XxT0rvaldsxX: ");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| XxT0rvaldsxX: ");
                     printWithDelays("cool. your vpns should be set up now.", STANDARDDELAY);
                     Thread.sleep(ONESECOND);
                     break;
@@ -286,35 +289,35 @@ public class Dingledine {
                 case 3:
                     if (mood != null) {
                         if (mood.equals("happy")) {
-                            System.out.print(new Clock().getTime() + "| XxT0rvaldsxX: ");
+                            changeColor("#BFC1CA", new Clock().getTime() + "| XxT0rvaldsxX: ");
                             printWithDelays("no problem, glad to help", STANDARDDELAY);
                         } else if (mood.equals("mean")) {
-                            System.out.print(new Clock().getTime() + "| XxT0rvaldsxX: ");
+                            changeColor("#BFC1CA", new Clock().getTime() + "| XxT0rvaldsxX: ");
                             printWithDelays("ya know, i don't have to help next time...", STANDARDDELAY);
                             Thread.sleep(ONESECOND);
                             
-                            System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                            changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                             printWithDelays("do you insist on being a jerk? ", STANDARDDELAY);
                         } else if (mood.equals("sarcastic")) {
-                            System.out.print(new Clock().getTime() + "| XxT0rvaldsxX: ");
+                            changeColor("#BFC1CA", new Clock().getTime() + "| XxT0rvaldsxX: ");
                             printWithDelays("k bye", STANDARDDELAY);
                         } else if (mood.equals("creepy")) {
-                            System.out.print(new Clock().getTime() + "| XxT0rvaldsxX: ");
+                            changeColor("#BFC1CA", new Clock().getTime() + "| XxT0rvaldsxX: ");
                             printWithDelays("im... gonna... go now?", STANDARDDELAY);
                         } else if (mood.equals("fancy")) {
-                            System.out.print(new Clock().getTime() + "| XxT0rvaldsxX: ");
+                            changeColor("#BFC1CA", new Clock().getTime() + "| XxT0rvaldsxX: ");
                             printWithDelays("mmmm indubitably... see ya bro", STANDARDDELAY);
                         }
                     } else { // Person is 'normal'
-                        System.out.print(new Clock().getTime() + "| d1ngledino: ");
+                        changeColor("#BFC1CA", new Clock().getTime() + "| d1ngledino: ");
                         printWithDelays("i gotta go, see ya later", STANDARDDELAY);
                     }
                     
-                    System.out.print(new Clock().getTime() + "| > user XxT0rvaldsxX left #0p1s1s");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| > user XxT0rvaldsxX left #0p1s1s");
                     Thread.sleep(ONESECOND);
                     System.out.println();
                     
-                    System.out.print(new Clock().getTime() + "| > user " + name + " left #0p1s1s");
+                    changeColor("#BFC1CA", new Clock().getTime() + "| > user " + name + " left #0p1s1s");
                     System.out.println();
                     
                     isIRC = false; // END CHAT
@@ -346,21 +349,29 @@ public class Dingledine {
             
             printWithDelays("First, you're going to need to install a tool called 'serversearcher'", STANDARDDELAY);
             printWithDelays("seversearcher will take a URL of a website and save the server's firewall file.", STANDARDDELAY);
-            printWithDelays("Unlike before, these files will actually be written to your physical desktop.", STANDARDDELAY);
+            printWithDelays("These files will be written to /firewalls/firewall_files.", STANDARDDELAY);
             Thread.sleep(ONESECOND);
             System.out.println();
             
-            printWithDelays("Then, you will use 'send' (it comes preinstalled) to send a virus in /etc to the firewall.", STANDARDDELAY);
+            printWithDelays("Then, you will use 'send' (it comes preinstalled) to send a virus in /malware to the firewall.", STANDARDDELAY);
             printWithDelays("The virus will return a series of possible passwords to crack into the firewall.", STANDARDDELAY);
             printWithDelays("Once you brute force through all the passwords, you will have full control over the servers.", STANDARDDELAY);
             Thread.sleep(ONESECOND);
             System.out.println();
             
-            printWithDelays("See you in the next test... Hopefully...", STANDARDDELAY);
+            printWithDelays("See you soon... Hopefully...", STANDARDDELAY);
             Thread.sleep(ONESECOND);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    
+    public void changeColor(String color, String data) {
+        TextAttributes attrs = new TextAttributes(Color.decode(color));
+        new Game().s_console.setTextAttributes(attrs);
+        System.out.print(data);
+        attrs = new TextAttributes(Color.WHITE);
+        new Game().s_console.setTextAttributes(attrs);
     }
    
     private void printWithDelays(String data, long delay) throws InterruptedException {

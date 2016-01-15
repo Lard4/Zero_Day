@@ -13,7 +13,8 @@ public class CommandWords {
         validCommands.put(4, "sudo");
         validCommands.put(5, "install");
         validCommands.put(6, "open");
-        validCommands.put(7, "exit");
+        validCommands.put(7, "send");
+        validCommands.put(8, "exit");
     }
     
     public void addCommands(String newCommand) {
