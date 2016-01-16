@@ -553,7 +553,8 @@ public class Game {
                                 } else if (firewall.equalsIgnoreCase("nextfinancial.com")) {
                                     level = 3;
                                 } else {
-                                    level = rand.nextInt(4);
+                                    //level = rand.nextInt(4);
+                                    level = 0;
                                 }
                                 
                                 changeColor("#F19001", ("FIREWALL SECURITY PATCH LEVEL " + level));
@@ -651,6 +652,11 @@ public class Game {
                                         return false;
                                     }
                                 } while (guessing);
+                                
+                                if (level == 0) {
+                                    player.setLocation("VPNSecure");
+                                    ding.levelFourHalf();
+                                }
                                 
                                 System.out.println("Connected to " + firewall + " servers.");
                             } catch (InterruptedException e) {

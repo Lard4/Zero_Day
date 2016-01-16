@@ -8,7 +8,7 @@ import java.net.*;
 public class Dingledine {
     private boolean isIRC = true;
     
-    private static final long STANDARDDELAY = 0; //80ms
+    private static final long STANDARDDELAY = 0; //30ms
     private static final long LONGDELAY = 0; //110ms
     private static final long ONESECOND = 0; //1000ms
     private static final long TWOSECOND = 0; //2000ms
@@ -356,6 +356,29 @@ public class Dingledine {
             printWithDelays("Then, you will use 'send' (it comes preinstalled) to send a virus in /malware to the firewall.", STANDARDDELAY);
             printWithDelays("The virus will return a series of possible passwords to crack into the firewall.", STANDARDDELAY);
             printWithDelays("Once you brute force through all the passwords, you will have full control over the servers.", STANDARDDELAY);
+            Thread.sleep(ONESECOND);
+            System.out.println();
+            
+            printWithDelays("See you soon... Hopefully...", STANDARDDELAY);
+            Thread.sleep(ONESECOND);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void levelFourHalf() {
+        System.out.println();
+        try {
+            System.out.println("--------------------------------------------------------------");
+            System.out.println();
+            
+            printWithDelays("Good job, kid. You got into the servers! But your mission is not complete yet.", STANDARDDELAY);
+            Thread.sleep(ONESECOND);
+            System.out.println();
+            
+            printWithDelays("Now that we are in their servers, we can have some fun...", STANDARDDELAY);
+            printWithDelays("First of all, lets give ourselves some free lifetime VPNs!", STANDARDDELAY);
+            printWithDelays("It looks like they have have a command called 'addVPN'", STANDARDDELAY);
             Thread.sleep(ONESECOND);
             System.out.println();
             
